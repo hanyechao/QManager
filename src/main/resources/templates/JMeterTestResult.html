@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"> 
+	<title>QManager 首页</title>
+	<link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="http://cdn.bootcss.com/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">QManager</a>
+			</div>
+			<div>
+				<ul class="nav navbar-nav">
+					<li ><a href="#">Jenkins管理</a></li>
+					<li class="active" class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							持续集成测试结果
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li class="active"><a href="/JMeterTestResult">JMeter接口测试用例结果</a></li>
+							<li><a href="#">JMeter性能测试用例结果</a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							测试工具
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="#">接口测试工具</a></li>
+							<li><a href="#">UI测试工具</a></li>
+							<li><a href="#">性能测试工具</a></li>
+							<li class="divider"></li>
+							<li><a href="#">mock数据</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			</div>
+		</nav>
+		
+<!-- 展示性能测试结果 -->
+
+<button onclick="openfile()">aaaaa</button>
+<script type="text/javascript" >
+function openfile(){
+alert("aaaa");
+var fso = new ActiveXObject("Scripting.FileSystemObject");
+
+var f1 = fso.createtextfile("c:\1.txt",true");
+}
+ 
+</script>
+</body>
+</html>

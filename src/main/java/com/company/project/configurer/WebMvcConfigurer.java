@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -31,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -47,7 +49,29 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
 	// 使用阿里 FastJson 作为JSON MessageConverter
 	@Override
 	public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+		// 调用父类的配置
+		super.configureMessageConverters(converters);
 		FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
+		// 升级最新版本需加=============================================================
+		List<MediaType> supportedMediaTypes = new ArrayList<>();
+		supportedMediaTypes.add(MediaType.APPLICATION_JSON);
+		supportedMediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
+		supportedMediaTypes.add(MediaType.APPLICATION_ATOM_XML);
+		supportedMediaTypes.add(MediaType.APPLICATION_FORM_URLENCODED);
+		supportedMediaTypes.add(MediaType.APPLICATION_OCTET_STREAM);
+		supportedMediaTypes.add(MediaType.APPLICATION_PDF);
+		supportedMediaTypes.add(MediaType.APPLICATION_RSS_XML);
+		supportedMediaTypes.add(MediaType.APPLICATION_XHTML_XML);
+		supportedMediaTypes.add(MediaType.APPLICATION_XML);
+		supportedMediaTypes.add(MediaType.IMAGE_GIF);
+		supportedMediaTypes.add(MediaType.IMAGE_JPEG);
+		supportedMediaTypes.add(MediaType.IMAGE_PNG);
+		supportedMediaTypes.add(MediaType.TEXT_EVENT_STREAM);
+		supportedMediaTypes.add(MediaType.TEXT_HTML);
+		supportedMediaTypes.add(MediaType.TEXT_MARKDOWN);
+		supportedMediaTypes.add(MediaType.TEXT_PLAIN);
+		supportedMediaTypes.add(MediaType.TEXT_XML);
+		converter.setSupportedMediaTypes(supportedMediaTypes);
 		FastJsonConfig config = new FastJsonConfig();
 		config.setSerializerFeatures(SerializerFeature.WriteMapNullValue, // 保留空的字段
 				SerializerFeature.WriteNullStringAsEmpty, // String null -> ""
@@ -55,6 +79,13 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
 		converter.setFastJsonConfig(config);
 		converter.setDefaultCharset(Charset.forName("UTF-8"));
 		converters.add(converter);
+	}
+
+	@Override
+	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
+		registry.addResourceHandler("/tmp/**").addResourceLocations("file:E:\\hanyechao\\JMeterTestcase\\tmp");
+		super.addResourceHandlers(registry);
 	}
 
 	// 统一异常处理
@@ -95,7 +126,7 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
 	// 解决跨域问题
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		// registry.addMapping("/**");
+//		 registry.addMapping("/**");
 	}
 
 	// 添加拦截器

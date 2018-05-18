@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link href="/static/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+<title>菜鸟教程(runoob.com)</title>
+</head>
+<body>
+
+<div class="panel panel-primary">
+   <div class="panel-heading">
+       <h3 class="panel-title">访问model</h3>
+   </div>
+    <div class="panel-body">
+        <span>${singlePerson.name}</span>
+    </div>
+</div>
+
+<div">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">列表</h3>
+        </div>
+        <div class="panel-body">
+            <ul class="list-group">
+			<%
+			for(p in people){
+			%>
+			    <li class="list-group-item">
+                    <span>${p.name}</span>
+                    <span>${p.age}</span>
+                    <button class="btn">获得名字</button>
+                </li>
+			<%
+			}
+			
+			%>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<script src="/static/jquery/jquery-3.3.1.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<script>
+	$(document).ready(function(){
+
+		$("button").click(function(){
+			$(this).text($("ul li:eq(0)").text());
+		})
+	});
+</script>
+</body>
+</html>
