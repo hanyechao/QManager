@@ -4,9 +4,6 @@ import java.io.File;
 
 import org.junit.Test;
 
-import com.company.project.common.OsCommand;
-import com.company.project.common.OsCommandImpl;
-
 public class OscommandTest {
 
 	@Test
@@ -17,8 +14,7 @@ public class OscommandTest {
 		File file = new File("E:/hanyechao/JMeterTestcase/tmp");
 		if (file.isDirectory()) {
 			String[] list = file.list();
-			OsCommand osCommand = new OsCommandImpl();
-			osCommand.windowsCMD("E:\\hanyechao\\JMeterTestcase\\jmter.bat "+ list.length);
+
 		}
 		
 	}

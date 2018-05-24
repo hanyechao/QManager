@@ -15,7 +15,14 @@ public class Mockdata {
 
     private String method;
 
-    private String response;
+    private String status;
+
+    @Column(name = "bodyFileName")
+    private String bodyfilename;
+
+    private String headers;
+
+    private String content;
 
     private String comment;
 
@@ -76,17 +83,59 @@ public class Mockdata {
     }
 
     /**
-     * @return response
+     * @return status
      */
-    public String getResponse() {
-        return response;
+    public String getStatus() {
+        return status;
     }
 
     /**
-     * @param response
+     * @param status
      */
-    public void setResponse(String response) {
-        this.response = response;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    /**
+     * @return bodyFileName
+     */
+    public String getBodyfilename() {
+        return bodyfilename;
+    }
+
+    /**
+     * @param bodyfilename
+     */
+    public void setBodyfilename(String bodyfilename) {
+        this.bodyfilename = bodyfilename;
+    }
+
+    /**
+     * @return headers
+     */
+    public String getHeaders() {
+        return headers;
+    }
+
+    /**
+     * @param headers
+     */
+    public void setHeaders(String headers) {
+        this.headers = headers;
+    }
+
+    /**
+     * @return content
+     */
+    public String getContent() {
+        return content;
+    }
+
+    /**
+     * @param content
+     */
+    public void setContent(String content) {
+        this.content = content;
     }
 
     /**

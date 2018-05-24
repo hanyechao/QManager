@@ -9,7 +9,10 @@
     <result column="interfaseName" jdbcType="VARCHAR" property="interfasename" />
     <result column="project_id" jdbcType="INTEGER" property="projectId" />
     <result column="method" jdbcType="VARCHAR" property="method" />
-    <result column="response" jdbcType="LONGVARCHAR" property="response" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="bodyFileName" jdbcType="VARCHAR" property="bodyfilename" />
+    <result column="headers" jdbcType="VARCHAR" property="headers" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
     <result column="comment" jdbcType="LONGVARCHAR" property="comment" />
   </resultMap>
 </mapper>

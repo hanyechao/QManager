@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.company.project.common.OsCommand;
-import com.company.project.common.OsCommandImpl;
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
 
@@ -31,8 +29,8 @@ public class JmeterController {
 		File file = new File("E:/hanyechao/JMeterTestcase/tmp");
 		if (file.isDirectory()) {
 			String[] list = file.list();
-			OsCommand osCommand = new OsCommandImpl();
-			osCommand.windowsCMD("E:\\hanyechao\\JMeterTestcase\\jmter.bat" + " " + list.length);
+//			OsCommand osCommand = new OsCommandImpl();
+//			osCommand.windowsCMD("E:\\hanyechao\\JMeterTestcase\\jmter.bat" + " " + list.length);
 			data.put("success", success);
 		}
 

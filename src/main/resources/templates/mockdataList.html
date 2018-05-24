@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- header content -->
+<% include("/header.html"){}%>
+<link rel="stylesheet" href="/static/bootstrap/css/jquery.jsonview.css">
+<!-- header content -->
+<!-- css属性 -->
+<style type="text/css">
+.fix_th {width:150px}
+</style>
+<!-- css属性 -->
+</head>
+
+<body>
+<div class="container">	
+<!-- Nav Bar Content -->
+<% include("/nav_bar.html",{mockdata:"active",testTool:"active"}){}%>
+<!-- Nav Bar Content -->
+
+
+<!-- mockdata画面 -->
+<div class="panel panel-default">
+<div class="panel-body">
+<p class="text-muted">mock服务状态：<span class="label label-primary">正常</span> 或 <span class="label label-danger">已经停止</span></p>
+<p class="text-muted">mock服务重启：<button type="button" class="btn btn-primary btn-sm">重启</button></p>
+<p class="text-muted">mock服务停止：<button type="button" class="btn btn-default btn-sm">停止</button></p>				
+</div>
+
+
+</div>							
+<table class="table">
+<caption>接口详细内容<div align="right" style="float:right"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">添加接口</button></div></caption>
+
+<thead>
+<tr>
+<th class="fix_th">ID</th>
+<th class="fix_th">接口 url</th>
+<th class="fix_th">请求方法 method</th>
+<th class="fix_th">返回状态 status</th>
+<th>bodyFileName</th>
+<th class="fix_th">请求头 headers</th>
+<th>完整参数</th>	
+<th class="fix_th">操作</th>
+</tr>
+</thead>
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content modal-lg">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					添加接口
+				</h4>
+			</div>
+			<div class="modal-body">
+				  <div class="form-group">
+					<label for="name">输入完整配置Json数据</label>
+					<textarea class="form-control" rows="15" placeholder='例如：
+{
+  "request": {
+    "method": "GET",
+    "url": "/api/mytest"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "text/html; charset=utf-8"
+    },
+    "body": "{"hasError":false,"content":{"success":true,"data":{"titleMsg":"登录名或登录密码不正确","resultCode":100},"status":0}}"
+  }
+}'></textarea>
+				  </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+				<button type="button" class="btn btn-primary">
+					提交
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+<tbody>
+
+</tbody>
+</table>
+
+</div>
+<script src="/static/bootstrap/js/jquery.jsonview.js"></script>
+<script>
+$(document).ready(function(){
+
+var id = window.localStorage.getItem("id");
+
+$.post("/mockdata/list",{projectId:id},function(data,status){
+if(data.code=="200"){
+
+var renderContent;
+if(data.data.list.length==0||data.data.list.length==null){
+renderContent="<span>暂无内容！</span>"
+}
+for(var i = 0;i < data.data.list.length; i++ ){
+renderContent += "<tr><td>"+(i+1)+"</td><td>"+data.data.list[i].interfasename+"</td><td>"+data.data.list[i].method+"</td><td>"+data.data.list[i].status+"</td><td>"+data.data.list[i].bodyfilename+"</td><td>"+data.data.list[i].headers+"</td><td data-toggle=\"tooltip\" title=\"双击可以格式json\">"+data.data.list[i].content+"</td><td><a href=\"#\">编辑</a>|<a href=\"#\">刪除</a></td></tr>";
+}
+$("tbody").html(renderContent);
+
+}
+
+$("td").dblclick(function(){
+$(this).JSONView($(this).text());
+});	
+});
+
+
+});
+</script>
+
+</body>
+</html>

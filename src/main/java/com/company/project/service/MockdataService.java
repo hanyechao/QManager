@@ -4,7 +4,7 @@ import com.company.project.core.Service;
 
 
 /**
- * Created by CodeGenerator on 2018/05/18.
+ * Created by CodeGenerator on 2018/05/22.
  */
 public interface MockdataService extends Service<Mockdata> {
 

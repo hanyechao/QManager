@@ -15,8 +15,13 @@ public class MainController {
 		return "JMeterTestResult";
 	}
 	
-	@RequestMapping("/mockdata")
+	@RequestMapping("/mockdata/project")
 	public String mockdata () {
-		return "mockdata";
+		return "mockdataProject";
+	}
+	
+	@RequestMapping("/mockdata/project/mockdataList")
+	public String mockdataList () {
+		return "mockdataList";
 	}
 }

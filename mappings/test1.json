@@ -1,0 +1,11 @@
+{
+    "request": {
+        "method": "GET",
+        "url": "/api/mytest1"
+    },
+    "response": {
+        "status": 200,
+		"headers":{"content-type":"text/html; charset=utf-8"},
+        "body": "{\"hasError\":false,\"content\":{\"success\":true,\"data\":{\"titleMsg\":\"登录名或登录密码不正确\",\"resultCode\":100},\"status\":0}}"
+    }
+}

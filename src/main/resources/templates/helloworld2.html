@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 <link href="/static/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
+	<link rel="stylesheet" href="/static/bootstrap/css/jquery.jsonview.css">
 <title>菜鸟教程(runoob.com)</title>
 </head>
 <body>
@@ -21,6 +22,23 @@
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title">列表</h3>
+            <p id="json">{
+										"request": {
+											"method": "POST",
+											"url": "/api/products",
+											  "bodyPatterns": [
+													 {"equalToJson" : "{ \"name\": \"new product\", \"creator\": \"tester\", \"createTime\": \"2015-09-07\" }", "jsonCompareMode": "LENIENT"}
+											 ]
+										},
+										"response": {
+											"status": 201,
+											"body": "Add successfully.",
+											 "headers":{
+													   "x-token":"xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+											 }
+										}
+
+									}</p>
         </div>
         <div class="panel-body">
             <ul class="list-group">
@@ -44,6 +62,7 @@
 
 <script src="/static/jquery/jquery-3.3.1.min.js"></script>
 <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/bootstrap/js/jquery.jsonview.js"></script>
 <script>
 	$(document).ready(function(){
 

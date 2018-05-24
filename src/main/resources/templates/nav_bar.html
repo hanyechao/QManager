@@ -1,0 +1,39 @@
+<!-- 导航栏栏目内容统一管理  -->
+
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/">QManager</a>
+			</div>
+			<div>
+				<ul class="nav navbar-nav">
+					<li ><a href="http://10.0.0.81:8082/jenkins/">Jenkins管理</a></li>
+					<li class="dropdown ${CItestResult!""}">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							持续集成
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li class="${JMeterTestResult!""}"><a href="/JMeterTestResult">用例集合</a></li>
+							<li><a href="#">用例结果</a></li>
+						</ul>
+					</li>
+					<li class="dropdown ${testTool!""}">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							测试工具
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li><a href="#">接口测试工具</a></li>
+							<li><a href="#">UI测试工具</a></li>
+							<li><a href="#">性能测试工具</a></li>
+							<li class="divider"></li>
+							<li class="${mockdataProject!""}"><a href="/mockdata/project">mock服务</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			</div>
+		</nav>
+
+<!-- 导航栏栏目内容统一管理  -->
