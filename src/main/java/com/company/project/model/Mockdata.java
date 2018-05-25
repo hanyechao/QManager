@@ -22,6 +22,9 @@ public class Mockdata {
 
     private String headers;
 
+    @Column(name = "fileName")
+    private String filename;
+
     private String content;
 
     private String comment;
@@ -122,6 +125,20 @@ public class Mockdata {
      */
     public void setHeaders(String headers) {
         this.headers = headers;
+    }
+
+    /**
+     * @return fileName
+     */
+    public String getFilename() {
+        return filename;
+    }
+
+    /**
+     * @param filename
+     */
+    public void setFilename(String filename) {
+        this.filename = filename;
     }
 
     /**

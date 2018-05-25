@@ -12,6 +12,7 @@
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="bodyFileName" jdbcType="VARCHAR" property="bodyfilename" />
     <result column="headers" jdbcType="VARCHAR" property="headers" />
+    <result column="fileName" jdbcType="VARCHAR" property="filename" />
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
     <result column="comment" jdbcType="LONGVARCHAR" property="comment" />
   </resultMap>

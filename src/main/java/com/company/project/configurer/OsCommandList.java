@@ -18,6 +18,6 @@ public interface OsCommandList {
 			+ Thread.currentThread().getContextClassLoader().getResource("wiremock-1.57-standalone.jar").getPath()
 					.substring(1)
 			+ " --port 9999 --verbose >>" + PROJECT_PATH + File.separator + "log" + File.separator + WIRE_MOCK_NAME;
-
+	String MAPPING_PATH = PROJECT_PATH + File.separator + "mappings";
 
 }

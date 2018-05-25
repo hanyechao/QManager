@@ -97,22 +97,23 @@
 <script>
 $(document).ready(function(){
 
-$.get("http://127.0.0.1:9999",function(data,status){
+<!-- $.get("http://127.0.0.1:9999",function(data,status){ -->
 
-});	
+<!-- });	 -->
 
 $.post("/project/list",function(data,status){
     if(data.code=="200"){
 		var renderContent;
 		for(var i = 0;i < data.data.list.length; i++ ){
-			renderContent += "<tr><td>"+i+"</td><td>"+data.data.list[i].projectname+"</td><td>"+data.data.list[i].projectdescribe+"</td><td><a href=\"/mockdata/project/mockdataList\">点击查看</a></td><td><a href=\"#\">编辑</a>|<a href=\"#\">刪除</a></td></tr>";
+			renderContent += "<tr id=\""+data.data.list[i].id+"\"><td>"+i+"</td><td>"+data.data.list[i].projectname+"</td><td>"+data.data.list[i].projectdescribe+"</td><td><a  href=\"/mockdata/project/mockdataList\">点击查看</a></td><td><a href=\"#\">编辑</a>|<a href=\"#\">刪除</a></td></tr>";
 		}
 		$("tbody").html(renderContent);
 		
 	}
 	
 	$("a").click(function(){
-		window.localStorage.setItem("id", $(this).parent().prev().prev().prev().text());
+		<!-- window.localStorage.setItem("id", $(this).parent().prev().prev().prev().text()); -->
+		window.localStorage.setItem("project_id", $(this).parent().parent().attr("id"));
 	});
 	
 	

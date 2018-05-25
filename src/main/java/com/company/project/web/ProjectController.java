@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
-* Created by CodeGenerator on 2018/05/24.
+* Created by CodeGenerator on 2018/05/25.
 */
 @RestController
 @RequestMapping("/project")
@@ -24,9 +24,6 @@ public class ProjectController {
 
     @PostMapping("/add")
     public Result add(Project project) {
-    	if ("".equals(project.getProjectname())||project.getProjectname()==null) {
-			return ResultGenerator.genFailResult("projectname 不能为空！");
-		}
         projectService.save(project);
         return ResultGenerator.genSuccessResult();
     }
