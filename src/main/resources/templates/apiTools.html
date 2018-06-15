@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- header content -->
+	<% include("/header.html"){} %>
+	<!-- header content -->
+</head>
+
+<body>
+<div class="container">	
+	<!-- Nav Bar Content -->
+	<% include("/nav_bar.html",{apiTools:"active",testTool:"active"}){}%>
+	<!-- Nav Bar Content -->
+
+
+		<div>
+			<label class="col-sm-2 control-label">请求url</label>
+			<input type="text" class="form-control" id="url" placeholder="输入请求url">
+		</div>
+		<div>
+			<label for="lastname" class="col-sm-2 control-label">请求类型</label>
+			<select class="form-control">
+				<option>POST</option>
+				<option>GET</option>
+			</select>
+		</div>
+		<div>
+			<label class="col-sm-2 control-label">请求参数</label>
+			<input type="text" class="form-control" id="param" placeholder="输入请求参数，例如：map形式xxx=xxx&xxx=xxx，或者json形式">
+		</div>
+		</br>
+	    <button id="submit" class="btn btn-default">发送</button>
+		</br>
+		</br>
+		<pre id = "content" ></pre>
+
+
+</div>
+<script src="/static/bootstrap/js/jquery.jsonview.js"></script>
+<script>
+$(document).ready(function(){
+
+//	$("#content").dblclick(function(){
+//	$(this).JSONView($(this).text());
+//	});	
+
+
+	$("#submit").click(function(){
+	
+	var url=$("#url").val();
+	var options=$("select option:selected").text();
+	var param=$("#param").val();
+	if(url==null||url==""){
+	alert("URL不能为空！");
+	return false;
+	}
+	if(options=="POST"){
+	options=0;
+	<!-- if(param==""){ -->
+		<!-- alert("请求类型POST，参数不能为空！") -->
+		<!-- return false; -->
+	<!-- } -->
+	}else if(options=="GET"){
+	options=1;
+	}
+	
+	$(this).text("提交中");
+	$(this).attr("disabled","true"); //设置变灰按钮   
+	setTimeout("$('#submit').removeAttr('disabled'),$('#submit').text('提交')",1000); //设置三秒后提交按钮 显示 
+	$.post("/testcase/post",{url:url,requesttype:options,requestcontent:param},function(data,status){
+	if(data.code=="200"){
+		if(data.data == null){
+			$('#content').text("null");
+		}else{
+			$('#content').text(data.data);
+			$('#content').JSONView(data.data);			
+		}
+	
+	}
+	if(data.code=="400"){
+	alert(data.message);
+
+	}
+	});	
+
+	});	
+
+});
+</script>
+</body>
+</html>

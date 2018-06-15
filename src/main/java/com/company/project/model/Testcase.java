@@ -1,124 +1,67 @@
 package com.company.project.model;
 
-import java.util.Date;
 import javax.persistence.*;
 
 public class Testcase {
     @Id
-    private String uuid;
+    @Column(name = "testcaseId")
+    private String testcaseid;
 
-    private Date createtime;
+    @Column(name = "testcaseName")
+    private String testcasename;
 
-    private Date modifytime;
-
-    @Column(name = "createUser")
-    private String createuser;
-
-    @Column(name = "URL")
-    private String url;
-
-    private String group;
-
-    private String request;
+    @Column(name = "requestContent")
+    private String requestcontent;
 
     private String response;
 
+    private String url;
+
+    @Column(name = "requestType")
+    private Integer requesttype;
+
+    private String verification;
+
     /**
-     * @return uuid
+     * @return testcaseId
      */
-    public String getUuid() {
-        return uuid;
+    public String getTestcaseid() {
+        return testcaseid;
     }
 
     /**
-     * @param uuid
+     * @param testcaseid
      */
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setTestcaseid(String testcaseid) {
+        this.testcaseid = testcaseid;
     }
 
     /**
-     * @return createtime
+     * @return testcaseName
      */
-    public Date getCreatetime() {
-        return createtime;
+    public String getTestcasename() {
+        return testcasename;
     }
 
     /**
-     * @param createtime
+     * @param testcasename
      */
-    public void setCreatetime(Date createtime) {
-        this.createtime = createtime;
+    public void setTestcasename(String testcasename) {
+        this.testcasename = testcasename;
     }
 
     /**
-     * @return modifytime
+     * @return requestContent
      */
-    public Date getModifytime() {
-        return modifytime;
+    public String getRequestcontent() {
+        return requestcontent;
     }
 
     /**
-     * @param modifytime
+     * @param requestcontent
      */
-    public void setModifytime(Date modifytime) {
-        this.modifytime = modifytime;
-    }
-
-    /**
-     * @return createUser
-     */
-    public String getCreateuser() {
-        return createuser;
-    }
-
-    /**
-     * @param createuser
-     */
-    public void setCreateuser(String createuser) {
-        this.createuser = createuser;
-    }
-
-    /**
-     * @return URL
-     */
-    public String getUrl() {
-        return url;
-    }
-
-    /**
-     * @param url
-     */
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    /**
-     * @return group
-     */
-    public String getGroup() {
-        return group;
-    }
-
-    /**
-     * @param group
-     */
-    public void setGroup(String group) {
-        this.group = group;
-    }
-
-    /**
-     * @return request
-     */
-    public String getRequest() {
-        return request;
-    }
-
-    /**
-     * @param request
-     */
-    public void setRequest(String request) {
-        this.request = request;
+    public void setRequestcontent(String requestcontent) {
+        this.requestcontent = requestcontent;
     }
 
     /**
@@ -133,5 +76,47 @@ public class Testcase {
      */
     public void setResponse(String response) {
         this.response = response;
+    }
+
+    /**
+     * @return url
+     */
+    public String getUrl() {
+        return url;
+    }
+
+    /**
+     * @param url
+     */
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    /**
+     * @return requestType
+     */
+    public Integer getRequesttype() {
+        return requesttype;
+    }
+
+    /**
+     * @param requesttype
+     */
+    public void setRequesttype(Integer requesttype) {
+        this.requesttype = requesttype;
+    }
+
+    /**
+     * @return verification
+     */
+    public String getVerification() {
+        return verification;
+    }
+
+    /**
+     * @param verification
+     */
+    public void setVerification(String verification) {
+        this.verification = verification;
     }
 }

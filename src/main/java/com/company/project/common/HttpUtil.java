@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -55,8 +56,10 @@ public class HttpUtil {
 
 				return strResult;
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
+			return e.getMessage();
+
 		}
 
 		return null;
@@ -106,12 +109,12 @@ public class HttpUtil {
 				return sb.toString();
 			} else { //
 				System.out.println("状态码：" + code);
-				return null;
+				return String.valueOf(code);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 
-			return null;
+			return e.getMessage();
 		}
 	}
 
@@ -132,15 +135,16 @@ public class HttpUtil {
 		StringEntity entity = new StringEntity(params, charSet);
 		httpPost.setEntity(entity);
 		CloseableHttpResponse response = null;
-
+		int state = 0;
+		String jsonString;
 		try {
 
 			response = httpclient.execute(httpPost);
 			StatusLine status = response.getStatusLine();
-			int state = status.getStatusCode();
+			state = status.getStatusCode();
 			if (state == HttpStatus.SC_OK) {
 				HttpEntity responseEntity = response.getEntity();
-				String jsonString = EntityUtils.toString(responseEntity);
+				jsonString = EntityUtils.toString(responseEntity);
 				return jsonString;
 			} else {
 				logger.error("请求返回:" + state + "(" + url + ")");

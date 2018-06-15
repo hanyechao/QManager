@@ -5,13 +5,12 @@
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="uuid" jdbcType="VARCHAR" property="uuid" />
-    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
-    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
-    <result column="createUser" jdbcType="VARCHAR" property="createuser" />
-    <result column="URL" jdbcType="VARCHAR" property="url" />
-    <result column="group" jdbcType="VARCHAR" property="group" />
-    <result column="request" jdbcType="LONGVARCHAR" property="request" />
-    <result column="response" jdbcType="LONGVARCHAR" property="response" />
+    <id column="testcaseId" jdbcType="VARCHAR" property="testcaseid" />
+    <result column="testcaseName" jdbcType="VARCHAR" property="testcasename" />
+    <result column="requestContent" jdbcType="VARCHAR" property="requestcontent" />
+    <result column="response" jdbcType="VARCHAR" property="response" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="requestType" jdbcType="INTEGER" property="requesttype" />
+    <result column="verification" jdbcType="VARCHAR" property="verification" />
   </resultMap>
 </mapper>

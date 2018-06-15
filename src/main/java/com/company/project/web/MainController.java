@@ -9,19 +9,29 @@ public class MainController {
 	public String home() {
 		return "home";
 	}
-	
+
+	@RequestMapping("/jenkins")
+	public String jenkins() {
+		return "jenkins";
+	}
+
 	@RequestMapping("/JMeterTestResult")
 	public String jmeterTestResult() {
 		return "JMeterTestResult";
 	}
-	
+
 	@RequestMapping("/mockdata/project")
-	public String mockdata () {
+	public String mockdata() {
 		return "mockdataProject";
 	}
-	
+
 	@RequestMapping("/mockdata/project/mockdataList")
-	public String mockdataList () {
+	public String mockdataList() {
 		return "mockdataList";
+	}
+
+	@RequestMapping("/apiTools")
+	public String apiTools() {
+		return "apiTools";
 	}
 }

@@ -18,6 +18,24 @@
 	</parent>
 
 	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
+		<dependency>
+			<groupId>org.seleniumhq.selenium</groupId>
+			<artifactId>selenium-java</artifactId>
+			<version>3.12.0</version>
+		</dependency>
+		<!-- get和set自动注入 -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.10</version>
+		</dependency>
+		<!-- 微信自动回复 -->
+		<dependency>
+			<groupId>io.github.biezhi</groupId>
+			<artifactId>wechat-api</artifactId>
+			<version>1.0.6</version>
+		</dependency>
 		<!-- beetl集成 -->
 		<dependency>
 			<groupId>com.ibeetl</groupId>

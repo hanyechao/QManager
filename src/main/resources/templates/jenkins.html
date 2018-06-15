@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- header content -->
+	<% include("/header.html"){}%>
+	<!-- header content -->
+</head>
+
+<body style="margin:0; padding:0">
+
+<div class="container">	
+	<!-- Nav Bar Content -->
+	<% include("/nav_bar.html",{jenkins:"active"}){}%>
+	<!-- Nav Bar Content -->
+
+		<div id="jenkins">
+		<iframe src="http://10.0.0.81:8082/jenkins" id="myiframe" scrolling="no" width="100%" onload="changeFrameHeight()" frameborder="0"></iframe>
+		</div> 
+</div>
+<script>
+function changeFrameHeight(){
+    var ifm= document.getElementById("myiframe"); 
+    ifm.height=document.documentElement.clientHeight;
+}
+window.onresize=function(){  
+     changeFrameHeight();  
+} 
+</script>
+</body>
+</html>

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.MultipartConfigElement;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +24,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -41,6 +44,13 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  */
 @Configuration
 public class WebMvcConfigurer extends WebMvcConfigurationSupport {
+	
+	 @Bean
+	 MultipartConfigElement multipartConfigElement() {
+	    MultipartConfigFactory factory = new MultipartConfigFactory();
+	    factory.setLocation("/tmp");
+	    return factory.createMultipartConfig();
+	}
 
 	private final Logger logger = LoggerFactory.getLogger(WebMvcConfigurer.class);
 	@Value("${spring.profiles.active}")
@@ -84,7 +94,7 @@ public class WebMvcConfigurer extends WebMvcConfigurationSupport {
 	@Override
 	protected void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
-		registry.addResourceHandler("/tmp/**").addResourceLocations("file:E:\\hanyechao\\JMeterTestcase\\tmp");
+//		registry.addResourceHandler("/tmp/**").addResourceLocations("file:E:\\hanyechao\\JMeterTestcase\\tmp");
 		super.addResourceHandlers(registry);
 	}
 
