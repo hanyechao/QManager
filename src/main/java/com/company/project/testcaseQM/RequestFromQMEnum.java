@@ -1,7 +1,5 @@
 package com.company.project.testcaseQM;
 
-import com.company.project.testcase.RequestTypeEnum;
-
 public enum RequestFromQMEnum {
 
 	GetRequestFromQM(RequestTypeEnum.GET.code(), GetRequestFromQM.class, "Get请求"), 

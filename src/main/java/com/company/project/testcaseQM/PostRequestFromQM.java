@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import com.company.project.common.HttpUtil;
 import com.company.project.common.JSONUtil;
-import com.company.project.testcase.RequestTypeEnum;
 import com.company.project.testcaseQM.model.TestcaseQM;
 
 @Component

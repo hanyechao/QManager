@@ -1,43 +1,90 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<!-- header content -->
-	<% include("/header.html"){} %>
-	<!-- header content -->
+<!-- header content -->
+<% include("/header.html"){} %>
+<!-- header content -->
 </head>
 
 <body>
-<div class="container">	
-	<!-- Nav Bar Content -->
-	<% include("/nav_bar.html",{apiTools:"active",testTool:"active"}){}%>
-	<!-- Nav Bar Content -->
+	<div class="container">
+		<!-- Nav Bar Content -->
+		<% include("/nav_bar.html",{apiTools:"active",testTool:"active"}){}%>
+		<!-- Nav Bar Content -->
 
 
 		<div>
-			<label class="col-sm-2 control-label">请求url</label>
-			<input type="text" class="form-control" id="url" placeholder="输入请求url">
+			<label class="col-sm-2 control-label">请求url</label> <input
+				type="text" class="form-control" id="url" placeholder="输入请求url">
 		</div>
 		<div>
-			<label for="lastname" class="col-sm-2 control-label">请求类型</label>
-			<select class="form-control">
+			<label for="lastname" class="col-sm-2 control-label">请求类型</label> <select
+				class="form-control" id="select">
 				<option>POST</option>
 				<option>GET</option>
 			</select>
 		</div>
 		<div>
-			<label class="col-sm-2 control-label">请求参数</label>
-			<input type="text" class="form-control" id="param" placeholder="输入请求参数，例如：map形式xxx=xxx&xxx=xxx，或者json形式">
+			<label class="col-sm-2 control-label">请求参数</label> <input type="text"
+				class="form-control" id="param"
+				placeholder="输入请求参数，例如：map形式xxx=xxx&xxx=xxx，或者json形式">
 		</div>
 		</br>
-	    <button id="submit" class="btn btn-default">发送</button>
-		</br>
-		</br>
-		<pre id = "content" ></pre>
+
+		<button id="submit" class="btn btn-primary">发送</button>
+		<button id="add" class="btn btn-default" data-toggle="modal"
+			data-target="#myModal">添加为用例</button>
+
+		</br> </br>
+		<pre id="content"></pre>
+
+		<!-- 模态框（Modal） -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">添加测试用例</h4>
+					</div>
+					<div class="modal-body">
+						<div>
+							<label class="col-sm-2 control-label">用例名称</label> <input
+								type="text" class="form-control" id="ts_name" placeholder="输入用例名称">
+						</div>
+						<div>
+							<label class="col-sm-2 control-label">请求url</label> <input
+								type="text" class="form-control" id="ts_url" placeholder="输入请求url">
+						</div>
+						<div>
+							<label for="lastname" class="col-sm-2 control-label">请求类型</label>
+							<select class="form-control" id="ts_select">
+								<option>POST</option>
+								<option>GET</option>
+							</select>
+						</div>
+						<div>
+							<label class="col-sm-2 control-label">请求参数</label> <input
+								type="text" class="form-control" id="ts_param"
+								placeholder="输入请求参数，例如：map形式xxx=xxx&xxx=xxx，或者json形式">
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+						</button>
+						<button type="button" class="btn btn-primary" id="ts_add">提交</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
 
 
-</div>
-<script src="/static/bootstrap/js/jquery.jsonview.js"></script>
-<script>
+	</div>
+	<script src="/static/bootstrap/js/jquery.jsonview.js"></script>
+	<script>
 $(document).ready(function(){
 
 //	$("#content").dblclick(function(){
@@ -48,7 +95,7 @@ $(document).ready(function(){
 	$("#submit").click(function(){
 	
 	var url=$("#url").val();
-	var options=$("select option:selected").text();
+	var options=$("#select option:selected").text();
 	var param=$("#param").val();
 	if(url==null||url==""){
 	alert("URL不能为空！");
@@ -84,6 +131,50 @@ $(document).ready(function(){
 	});	
 
 	});	
+	
+	$("#add").click(function(){
+		var url=$("#url").val();
+		var options=$("#select option:selected").text();
+		var param=$("#param").val();
+		$("#ts_url").val(url);
+		$("#ts_select").val(options);
+		$("#ts_param").val(param);		
+	});
+	
+	$("#ts_add").click(function(){
+			var ts_url=$("#ts_url").val();
+			var ts_select=$("#ts_select option:selected").text();
+			var ts_param=$("#ts_param").val();
+			var ts_name=$("#ts_name").val();
+			if(ts_url==null||ts_url==""){
+			alert("URL不能为空！");
+			return false;
+			}
+			if(ts_select=="POST"){
+				ts_select=0;
+			<!-- if(param==""){ -->
+				<!-- alert("请求类型POST，参数不能为空！") -->
+				<!-- return false; -->
+			<!-- } -->
+			}else if(ts_select=="GET"){
+				ts_select=1;
+			}
+			if(ts_name==null||ts_name==""){
+				alert("用例名称不能为空！");
+				return false;	
+			}
+			$(this).text("提交中");
+			$(this).attr("disabled","true"); //设置变灰按钮   
+			setTimeout("$('#ts_add').removeAttr('disabled'),$('#ts_add').text('提交')",1000); //设置三秒后提交按钮 显示 
+			
+			$.post("/testcase/add",{url:ts_url,requesttype:ts_select,requestcontent:ts_name,testcasename:ts_name,verification:""},function(data,status){
+				if(data.code=="200"){							
+				}
+				});	
+			
+
+	});	
+	
 
 });
 </script>

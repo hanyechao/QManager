@@ -4,7 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.company.project.common.HttpUtil;
-import com.company.project.testcase.RequestTypeEnum;
 import com.company.project.testcaseQM.model.TestcaseQM;
 
 @Component

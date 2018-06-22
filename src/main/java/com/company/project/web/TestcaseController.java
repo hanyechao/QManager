@@ -1,6 +1,7 @@
 package com.company.project.web;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -14,10 +15,6 @@ import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
 import com.company.project.model.Testcase;
 import com.company.project.service.TestcaseService;
-import com.company.project.testcase.HttpTestcaseRequest;
-import com.company.project.testcase.RequestTypeEnum;
-import com.company.project.testcaseQM.GetRequestFromQM;
-import com.company.project.testcaseQM.PostRequestFromQM;
 import com.company.project.testcaseQM.SendRequestQM;
 import com.company.project.testcaseQM.model.TestcaseQM;
 import com.github.pagehelper.PageHelper;
@@ -31,9 +28,6 @@ import com.github.pagehelper.PageInfo;
 public class TestcaseController {
 	@Resource
 	private TestcaseService testcaseService;
-
-	@Autowired
-	HttpTestcaseRequest httpTestcaseRequest;
 
 	@Autowired
 	SendRequestQM sendRequestQM;
@@ -58,6 +52,14 @@ public class TestcaseController {
 
 	@PostMapping("/add")
 	public Result add(Testcase testcase) {
+		if (testcase.getRequesttype().equals("")) {
+			return ResultGenerator.genFailResult("请求类型不能为空！");
+		}
+		if (testcase.getUrl().equals("")) {
+			return ResultGenerator.genFailResult("URL不能为空！");
+		}
+		String uuid = UUID.randomUUID().toString();
+		testcase.setTestcaseid(uuid);
 		testcaseService.save(testcase);
 		return ResultGenerator.genSuccessResult();
 	}
