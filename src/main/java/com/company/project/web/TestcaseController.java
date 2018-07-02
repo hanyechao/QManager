@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.swing.Spring;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,8 +66,8 @@ public class TestcaseController {
 	}
 
 	@PostMapping("/delete")
-	public Result delete(@RequestParam Integer id) {
-		testcaseService.deleteById(id);
+	public Result delete(@RequestParam String testcaseid) {
+		testcaseService.deleteTestcaseid(testcaseid);
 		return ResultGenerator.genSuccessResult();
 	}
 

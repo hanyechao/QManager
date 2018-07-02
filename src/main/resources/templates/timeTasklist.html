@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- header content -->
+<% include("/header.html"){}%>
+<link rel="stylesheet" href="/static/bootstrap/css/jquery.jsonview.css">
+
+<!-- header content -->
+</head>
+
+<body>
+<div class="container">
+<!-- Nav Bar Content -->
+<% include("/nav_bar.html",{timeTasklist:"active",CItest:"active"}){}%>
+<!-- Nav Bar Content -->
+
+<div class="container">
+
+<div class="row">
+<div><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">添加定时任务分组</button></div>
+<hr>
+<div id="tasklist"></div>
+
+
+</div>
+
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">&times;</button>
+						<h4 class="modal-title" id="myModalLabel">添加定时任务分组</h4>
+					</div>
+					<div class="modal-body">
+						<div>
+							<label class="col-sm-2 control-label">任务名称</label> <input
+								type="text" class="form-control" id="taskName" placeholder="输入任务名称">
+						</div>
+						
+						<div>
+							<label class="col-sm-2 control-label">任务描述</label> <input
+								type="text" class="form-control" id="taskdescribe" placeholder="输入任务描述">
+						</div>
+
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+						</button>
+						<button type="button" class="btn btn-primary" id="ts_add">提交</button>
+					</div>
+				</div>
+				<!-- /.modal-content -->
+			</div>
+			<!-- /.modal -->
+		</div>
+</div>
+
+
+
+
+</div>
+<script src="/static/bootstrap/js/jquery.jsonview.js"></script>
+<script>
+$(document).ready(function(){
+
+	$.post("/task/group/list",{},function(data){
+		if(data.code=="200"){
+
+		var renderContent="";
+		if(data.data.list.length==0||data.data.list.length==null){
+		renderContent="<span>暂无内容！</span>"
+		}
+		for(var i = 0;i < data.data.list.length; i++ ){
+		renderContent += '<a href="#"><div class="panel panel-default col-xs-12"><div class="panel-body">'+data.data.list[i].groupName+'</div></div></a>';
+		}
+		$("#tasklist").html(renderContent);
+
+		}
+
+		});
+	
+	
+	
+	$("#ts_add").click(function(){
+		var taskName=$("#taskName").val();
+		var taskdescribe=$("#taskdescribe").val();
+
+		if(taskName==null||taskName==""){
+		alert("任务名称不能为空！");
+		return false;
+		}
+
+		$(this).text("提交中");
+		$(this).attr("disabled","true"); //设置变灰按钮   
+		setTimeout("$('#ts_add').removeAttr('disabled'),$('#ts_add').text('提交')",1000); //设置三秒后提交按钮 显示 
+		
+		$.post("/task/group/add",{groupName:taskName,groupDescribe:taskdescribe},function(data,status){
+			if(data.code=="200"){
+				$("#myModal").modal("hide")
+				window.location.reload();
+			}
+			});	
+		
+
+		});	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+});
+</script>
+
+</body>
+</html>

@@ -11,12 +11,13 @@ import org.omg.CORBA.Object;
 import org.springframework.stereotype.Component;
 
 import com.alibaba.druid.sql.ast.statement.SQLIfStatement.ElseIf;
+import com.company.project.model.Testcase;
 import com.company.project.testcaseQM.model.TestcaseQM;
 
 @Component
 public class SendRequestQM {
 
-	private List<TestcaseQM> testcaseQMs;
+	private List<? extends Testcase> testcaseQMs;
 
 	/**
 	 * 执行用例目前暫定順序執行，後期慢慢調整並發模式執行
@@ -37,7 +38,7 @@ public class SendRequestQM {
 			map.put(requestFromQMEnum, requestFromQM);
 		}
 		Set<Entry<RequestFromQMEnum, RequestFromQM>> entrySet = map.entrySet();
-		for (TestcaseQM testcaseQM : testcaseQMs) {
+		for (Testcase testcaseQM : testcaseQMs) {
 			for (Entry<RequestFromQMEnum, RequestFromQM> entry : entrySet) {
 				if (entry.getKey().getRequesttype() == testcaseQM.getRequesttype()) {
 					entry.getValue().executed(testcaseQM);
@@ -53,10 +54,10 @@ public class SendRequestQM {
 	}
 
 	public List<TestcaseQM> getTestcaseQMs() {
-		return testcaseQMs;
+		return (List<TestcaseQM>) testcaseQMs;
 	}
 
-	public void setTestcaseQMs(List<TestcaseQM> testcaseQMs) {
+	public void setTestcaseQMs(List<? extends Testcase> testcaseQMs) {
 		this.testcaseQMs = testcaseQMs;
 	}
 

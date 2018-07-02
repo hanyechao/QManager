@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- header content -->
+<% include("/header.html"){}%>
+<link rel="stylesheet" href="/static/bootstrap/css/jquery.jsonview.css">
+<!-- header content -->
+<!-- css属性 -->
+<style type="text/css">
+.fix_th {width:150px}
+</style>
+<!-- css属性 -->
+</head>
+
+<body>
+<div class="container">	
+<!-- Nav Bar Content -->
+<% include("/nav_bar.html",{testcaseList:"active",CItest:"active"}){}%>
+<!-- Nav Bar Content -->
+
+						
+<table class="table">
+<caption>已添加测试用例列表<div align="right" style="float:right"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">添加用例</button></div></caption>
+
+<thead>
+<tr>
+<th class="fix_th">ID</th>
+<th class="fix_th">测试用例</th>
+<th class="fix_th">操作</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					&times;
+				</button>
+				<h4 class="modal-title" id="myModalLabel">
+					请求结果
+				</h4>
+			</div>
+			<div class="modal-body" id="resault">
+				没有任何发现~
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+				</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+
+
+<!-- 信息删除确认 -->  
+<div class="modal fade" id="delcfmModel">  
+  <div class="modal-dialog">  
+    <div class="modal-content message_align">  
+      <div class="modal-header">  
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>  
+        <h4 class="modal-title">提示信息</h4>  
+      </div>  
+      <div class="modal-body">  
+        <p>您确认要删除吗？</p>  
+      </div>  
+      <div class="modal-footer">  
+         <input type="hidden" id="url"/>  
+         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>  
+         <a  onclick="urlSubmit()" class="btn btn-success" data-dismiss="modal">确定</a>  
+      </div>  
+    </div><!-- /.modal-content -->  
+  </div><!-- /.modal-dialog -->  
+</div><!-- /.modal -->  
+
+</div>
+<script src="/static/bootstrap/js/jquery.jsonview.js"></script>
+<script>
+$(document).ready(function(){
+
+var id = window.localStorage.getItem("project_id");
+
+$.post("/testcase/list",{projectId:id},function(data,status){
+if(data.code=="200"){
+
+var renderContent;
+if(data.data.list.length==0||data.data.list.length==null){
+renderContent="<span>暂无内容！</span>"
+}
+for(var i = 0;i < data.data.list.length; i++ ){
+//renderContent += "<tr id=\""+data.data.list[i].id+"\"><td>"+(i+1)+"</td><td>"+data.data.list[i].testcasename+"</td><td>"+data.data.list[i].url+"</td><td>"+data.data.list[i].requesttype+"</td><td data-toggle=\"tooltip\" title=\"双击可以格式json\">"+data.data.list[i].requestcontent+"</td><td><a href=\"#\">编辑</a>|<a href=\"#\">刪除</a></td></tr>";
+
+renderContent += "<tr id=\""+data.data.list[i].id+"\"><td>"+(i+1)+
+"</td><td>"+
+"testcaseid："+data.data.list[i].testcaseid+
+"\n</br>testcasename："+data.data.list[i].testcasename+
+"\n</br>url："+data.data.list[i].url+
+"\n</br>requesttype："+data.data.list[i].requesttype+
+"\n</br>requestcontent："+data.data.list[i].requestcontent+
+"</td><td><a href=\"#\">编辑</a>|<a class='delete' href=\"#\">刪除</a></br></br><button type='button' class='btn btn-info' data-toggle='modal'>调试</button></td></tr>";
+}
+$("tbody").html(renderContent);
+
+}
+
+});
+
+$("#submit").click(function(){
+
+var json = $("textarea").val();
+$(this).text("提交中");
+$(this).attr("disabled","true"); //设置变灰按钮   
+setTimeout("$('#submit').removeAttr('disabled')",1000); //设置三秒后提交按钮 显示 
+$.post("/mockdata/add",{json:json,projectId:id},function(data,status){
+if(data.code=="200"){
+$('#myModal').modal('hide');
+alert(data.message);
+
+}
+if(data.code=="400"){
+alert(data.message);
+
+}
+});	
+});	
+
+
+$("tbody").on("click","button",function(){
+	var testcase = $(this).parent().prev().text()	
+    var arr = foo(testcase);
+	var json={};
+	for(var i = 0 ; i < arr.length ; i++){
+		var arrStr  = arrSplit(arr[i]);
+		json[arrStr[0]] = arrStr[1];	
+	}
+	console.log(json);
+	$.post("/testcase/post",json,function(data,status){
+		if(data.code=="200"){
+	
+			$('#myModal').modal('show');
+			$("#resault").text(data.data);
+		
+		}
+		if(data.code=="400"){
+		alert(data.message);
+
+		}
+		});	
+	$("#resault").dblclick(function(){
+		$(this).JSONView($(this).text());
+		});	
+});
+
+
+function foo(str){
+    var temp = str.split(/[\n,]/g);
+        for(var i =0;i<temp.length;i++){
+        if(temp[i] == ""){
+            temp.splice(i, 1);
+            //删除数组索引位置应保持不变
+            i--;
+        }
+    }
+    return temp;
+}
+
+function arrSplit(str){
+	var arr = str.split("：")
+	return arr;
+
+}
+
+
+$("tbody").on("click",".delete",function(){
+	var testcase = $(this).parent().prev().text()	
+    var arr = foo(testcase);
+	var json={};
+	json.testcaseid = arrSplit(arr[0])[1];
+	console.log(json);
+	if(json!=null||json!=""){
+		if(confirm("是否要删除该条数据！")){
+			$.post("/testcase/delete",json,function(data,status){
+				if(data.code=="200"){	
+					window.location.reload();
+				}
+				if(data.code=="400"){
+				alert(data.message);
+
+				}
+				});	
+		}
+	}
+
+});
+
+
+
+
+
+
+});
+</script>
+
+</body>
+</html>

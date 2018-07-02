@@ -8,14 +8,15 @@
 			<div>
 				<ul class="nav navbar-nav">
 					<li class="dropdown ${jenkins!""}"><a href="/jenkins">Jenkins管理</a></li>
-					<li class="dropdown ${CItestResult!""}">
+					<li class="dropdown ${CItest!""}">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							持续集成
 							<b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu">
-							<li class="${JMeterTestResult!""}"><a href="/JMeterTestResult">用例集合</a></li>
-							<li><a href="#">用例结果</a></li>
+							<li class="${testcaseList!""}"><a href="/testcaseList">用例集合</a></li>
+							<li class="${timeTasklist!""}"><a href="/timeTasklist">定时任务</a></li>
+							<li class="${JMeterTestResult!""}"><a href="/JMeterTestResult">用例结果</a></li>
 						</ul>
 					</li>
 					<li class="dropdown ${testTool!""}">

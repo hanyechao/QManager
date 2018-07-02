@@ -167,8 +167,9 @@ $(document).ready(function(){
 			$(this).attr("disabled","true"); //设置变灰按钮   
 			setTimeout("$('#ts_add').removeAttr('disabled'),$('#ts_add').text('提交')",1000); //设置三秒后提交按钮 显示 
 			
-			$.post("/testcase/add",{url:ts_url,requesttype:ts_select,requestcontent:ts_name,testcasename:ts_name,verification:""},function(data,status){
-				if(data.code=="200"){							
+			$.post("/testcase/add",{url:ts_url,requesttype:ts_select,requestcontent:ts_param,testcasename:ts_name,verification:""},function(data,status){
+				if(data.code=="200"){
+					$("#myModal").modal("hide")
 				}
 				});	
 			

@@ -8,4 +8,5 @@ import com.company.project.core.Service;
  */
 public interface TestcaseService extends Service<Testcase> {
 
+	void deleteTestcaseid(String testcaseid);
 }

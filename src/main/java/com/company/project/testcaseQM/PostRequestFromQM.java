@@ -1,6 +1,8 @@
 package com.company.project.testcaseQM;
 
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map.Entry;
 
 import javax.servlet.http.HttpUtils;
 
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.company.project.common.HttpUtil;
 import com.company.project.common.JSONUtil;
+import com.company.project.model.Testcase;
 import com.company.project.testcaseQM.model.TestcaseQM;
 
 @Component
@@ -26,8 +29,9 @@ public class PostRequestFromQM implements RequestFromQM {
 		return false;
 	}
 
+
 	@Override
-	public boolean executed(TestcaseQM testcaseQM) {
+	public <T extends Testcase> boolean executed(T testcaseQM) {
 		if (testcaseQM.getRequesttype() == RequestTypeEnum.POST.code()) {
 
 			try {
@@ -38,7 +42,11 @@ public class PostRequestFromQM implements RequestFromQM {
 				} else {
 					Hashtable<String, String[]> parseQueryString = HttpUtils
 							.parseQueryString(testcaseQM.getRequestcontent());
-					String doPost = HttpUtil.doPost(testcaseQM.getUrl(), parseQueryString);
+					HashMap<String, String> map = new HashMap<>();
+					for (Entry<String, String[]> entry : parseQueryString.entrySet()) {
+						map.put(entry.getKey(), entry.getValue()[0]);
+					}
+					String doPost = HttpUtil.doPost(testcaseQM.getUrl(), map);
 					testcaseQM.setResponse(doPost);
 				}
 
@@ -52,6 +60,5 @@ public class PostRequestFromQM implements RequestFromQM {
 		}
 		return false;
 	}
-	
 
 }

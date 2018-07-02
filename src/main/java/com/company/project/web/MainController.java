@@ -19,6 +19,11 @@ public class MainController {
 	public String jmeterTestResult() {
 		return "JMeterTestResult";
 	}
+	
+	@RequestMapping("/testcaseList")
+	public String testcaseList() {
+		return "testcaseList";
+	}
 
 	@RequestMapping("/mockdata/project")
 	public String mockdata() {
@@ -33,5 +38,10 @@ public class MainController {
 	@RequestMapping("/apiTools")
 	public String apiTools() {
 		return "apiTools";
+	}
+	
+	@RequestMapping("/timeTasklist")
+	public String timeTasklist() {
+		return "timeTasklist";
 	}
 }

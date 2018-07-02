@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.company.project.common.HttpUtil;
+import com.company.project.model.Testcase;
 import com.company.project.testcaseQM.model.TestcaseQM;
 
 @Component
@@ -22,7 +23,7 @@ public class GetRequestFromQM implements RequestFromQM {
 	}
 
 	@Override
-	public boolean executed(TestcaseQM testcaseQM) {
+	public <T extends Testcase> boolean executed(T testcaseQM) {
 		if (testcaseQM.getRequesttype() == RequestTypeEnum.GET.code()) {
 
 			try {
@@ -42,5 +43,6 @@ public class GetRequestFromQM implements RequestFromQM {
 		}
 		return false;
 	}
+
 
 }

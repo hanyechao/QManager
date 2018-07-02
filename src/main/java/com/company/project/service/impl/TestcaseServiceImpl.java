@@ -19,4 +19,10 @@ public class TestcaseServiceImpl extends AbstractService<Testcase> implements Te
     @Resource
     private TestcaseMapper testcaseMapper;
 
+	@Override
+	public void deleteTestcaseid(String testcaseid) {
+		testcaseMapper.deleteByPrimaryKey(testcaseid);
+		
+	}
+
 }
