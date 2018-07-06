@@ -9,14 +9,23 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
-
 /**
  * Created by CodeGenerator on 2018/06/29.
  */
 @Service
 @Transactional
 public class TaskGroupServiceImpl extends AbstractService<TaskGroup> implements TaskGroupService {
-    @Resource
-    private TaskGroupMapper taskGroupMapper;
+	@Resource
+	private TaskGroupMapper taskGroupMapper;
+
+	@Override
+	public void deleteByGroupId(String groupId) {
+		taskGroupMapper.deleteByPrimaryKey(groupId);
+	}
+
+	@Override
+	public TaskGroup findByGrouId(String groupId) {
+		return taskGroupMapper.selectByPrimaryKey(groupId);
+	}
 
 }

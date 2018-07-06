@@ -67,9 +67,9 @@ public class QuartzManager {
 			// 调度容器设置JobDetail和Trigger
 			scheduler.scheduleJob(jobDetail, trigger);
 			// 启动
-			if (!scheduler.isShutdown()) {
-				scheduler.start();
-			}
+//			if (!scheduler.isShutdown()) {
+//				scheduler.start();
+//			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -164,5 +164,13 @@ public class QuartzManager {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	/**
+	 * get 当前scheduler实例
+	 * @return
+	 */
+	public Scheduler getScheduler(){
+		return scheduler;
 	}
 }

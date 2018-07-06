@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- header content -->
+	<% include("/header.html"){}%>
+	<link rel="stylesheet" href="/static/bootstrap/css/jquery.jsonview.css">
+	<!-- header content -->
+	<!-- css属性 -->
+	<style type="text/css">
+		.fix_th {width:150px}
+	</style>
+	<!-- css属性 -->
+</head>
+
+<body>
+<div class="container">	
+	<!-- Nav Bar Content -->
+	<% include("/nav_bar.html",{timertasksetting:"active",management:"active"}){}%>
+	<!-- Nav Bar Content -->
+
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">当前定时任务状态：<span class="label label-danger">已经停止</span></h3>
+		</div>
+		<div class="panel-body">
+			<button type="button" id="resumeAll" class="btn btn-primary btn-sm">恢复全部</button>		
+			<hr>
+			<button type="button" id="pauseAll" class="btn btn-default btn-sm">全部暂停</button>
+		</div>
+	</div>
+	
+	
+	
+</div>
+<script src="/static/bootstrap/js/jquery.jsonview.js"></script>
+<script>
+$(document).ready(function(){
+getState();
+<!-- $.get("http://127.0.0.1:9999",function(data,status){ -->
+
+<!-- });	 -->
+
+$.post("/project/list",function(data,status){
+    if(data.code=="200"){
+		var renderContent;
+		if(data.data.list.length==0){
+			renderContent = "<span>暂无内容！</span>";
+		}
+		for(var i = 0;i < data.data.list.length; i++ ){
+			renderContent += "<tr id=\""+data.data.list[i].projectId+"\"><td>"+i+"</td><td>"+data.data.list[i].projectname+"</td><td>"+data.data.list[i].projectdescribe+"</td><td><a href=\"#\">编辑</a>|<a href='javascript:void(0);'>删除</a></td></tr>";
+		}
+		$("tbody").html(renderContent);
+		
+	}
+	
+	$("a").click(function(){
+		<!-- window.localStorage.setItem("id", $(this).parent().prev().prev().prev().text()); -->
+		window.localStorage.setItem("project_id", $(this).parent().parent().attr("id"));
+	});
+	
+	
+});
+
+$("#submit").click(function(){
+var projectname = $("#projectname").val();
+var projectdescribe = $("#projectdescribe").val();
+
+$(this).text("提交中");
+$(this).attr("disabled","true"); //设置变灰按钮   
+setTimeout("$('#submit').removeAttr('disabled')",1000); //设置三秒后提交按钮 显示 
+$.post("/project/add",{projectname:projectname,projectdescribe:projectdescribe},function(data,status){
+if(data.code=="200"){
+$('#myModal').modal('hide');
+window.location.reload();
+}
+if(data.code=="400"){
+alert(data.message);
+
+}
+});	
+});	
+
+$("tbody").on("click","a",function(){
+	var projectId = $(this).parent().parent().attr("id")
+	if($(this).text()== "删除" && confirm("是否要删除该条数据？")){
+	
+		$.post("/project/delete",{projectId:projectId},function(data,status){
+			if(data.code=="200"){
+			window.location.reload();
+			}
+			if(data.code=="400"){
+			alert(data.message);
+			}
+			});	
+	}
+
+});
+
+$("#resumeAll").click(function(){
+
+	$(this).attr("disabled","true"); //设置变灰按钮   
+	setTimeout("$('#resumeAll').removeAttr('disabled')",1000); //设置三秒后提交按钮 显示 
+	$.post("/quartz/task/resumeAll",function(data,status){
+	if(data.code=="200"){
+	getState()
+	}
+	if(data.code=="400"){
+	alert(data.message);
+	}
+	});	
+	});	
+
+$("#pauseAll").click(function(){
+
+$(this).attr("disabled","true"); //设置变灰按钮   
+setTimeout("$('#pauseAll').removeAttr('disabled')",1000); //设置三秒后提交按钮 显示 
+$.post("/quartz/task/pauseAll",function(data,status){
+if(data.code=="200"){
+getState()
+}
+if(data.code=="400"){
+alert(data.message);
+}
+});	
+});	
+
+
+function getState(){
+	 $.ajax({
+         type: "POST",
+         url: "/quartz/task/getSchedulerState",
+         dataType: "json",
+         success: function(data){
+				$(".panel-heading").html('<h3 class="panel-title">当前定时任务状态：<span class="label label-danger">'+data.data+'</span></h3>')
+                  }
+     });
+
+
+}
+	
+});
+
+</script>
+
+</body>
+</html>

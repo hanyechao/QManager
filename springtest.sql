@@ -10,10 +10,32 @@ Target Server Type    : MYSQL
 Target Server Version : 50621
 File Encoding         : 65001
 
-Date: 2018-06-15 15:18:03
+Date: 2018-07-06 12:12:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for group_testcase
+-- ----------------------------
+DROP TABLE IF EXISTS `group_testcase`;
+CREATE TABLE `group_testcase` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cratetime` timestamp NOT NULL,
+  `modifytime` timestamp NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `group_id` varchar(64) DEFAULT NULL,
+  `testcaseId` varchar(64) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=110 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of group_testcase
+-- ----------------------------
+INSERT INTO `group_testcase` VALUES ('105', '2018-07-06 11:34:44', '2018-07-06 11:34:44', '1fc94696-c0aa-452b-9a43-f55e8501fc00', '04f1715b-932a-4c87-867b-283e0abc7270');
+INSERT INTO `group_testcase` VALUES ('106', '2018-07-06 11:35:08', '2018-07-06 11:35:08', '1fc94696-c0aa-452b-9a43-f55e8501fc00', 'c0134e20-cda0-44bf-ac2f-233258eca443');
+INSERT INTO `group_testcase` VALUES ('107', '2018-07-06 11:52:25', '2018-07-06 11:52:25', '4bfa71b9-8b6e-4c3a-96b1-a9711ac9ef8a', '75b5bc43-2eef-45e4-97aa-5e568bd68deb');
+INSERT INTO `group_testcase` VALUES ('108', '2018-07-06 11:53:13', '2018-07-06 11:53:13', '1fc94696-c0aa-452b-9a43-f55e8501fc00', '75b5bc43-2eef-45e4-97aa-5e568bd68deb');
+INSERT INTO `group_testcase` VALUES ('109', '2018-07-06 11:55:44', '2018-07-06 11:55:44', '4bfa71b9-8b6e-4c3a-96b1-a9711ac9ef8a', 'df27310f-d047-4892-8623-b05faba18a4e');
 
 -- ----------------------------
 -- Table structure for mockdata
@@ -57,10 +79,10 @@ INSERT INTO `mockdata` VALUES ('19', '/api/add', '1', 'POST', '{  \n\"request\":
 INSERT INTO `mockdata` VALUES ('20', '/api/hello', '1', 'POST', '{ \"request\":{ \"url\":\"/api/hello\", \"method\":\"POST\" }, \"response\":{ \"status\":200, \"body\":\"hello body\" } }', null, '200', null, null, 'dbbd2a0e-ab7f-439b-80d9-50793c239302_1.json');
 
 -- ----------------------------
--- Table structure for mockd_data
+-- Table structure for mock_data_new
 -- ----------------------------
-DROP TABLE IF EXISTS `mockd_data`;
-CREATE TABLE `mockd_data` (
+DROP TABLE IF EXISTS `mock_data_new`;
+CREATE TABLE `mock_data_new` (
   `id` int(11) NOT NULL,
   `project_id` int(11) DEFAULT NULL,
   `request` longtext,
@@ -74,7 +96,7 @@ CREATE TABLE `mockd_data` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of mockd_data
+-- Records of mock_data_new
 -- ----------------------------
 
 -- ----------------------------
@@ -82,14 +104,35 @@ CREATE TABLE `mockd_data` (
 -- ----------------------------
 DROP TABLE IF EXISTS `postman_info`;
 CREATE TABLE `postman_info` (
-  `_postman_id` varchar(255) NOT NULL,
+  `_postman_id` varchar(64) CHARACTER SET utf8mb4 NOT NULL,
   `name` varchar(255) NOT NULL,
   `schema` varchar(255) NOT NULL,
+  `createtime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `modifytime` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`_postman_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of postman_info
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for postman_itemlist
+-- ----------------------------
+DROP TABLE IF EXISTS `postman_itemlist`;
+CREATE TABLE `postman_itemlist` (
+  `itemId` varchar(128) CHARACTER SET utf8mb4 NOT NULL,
+  `_postman_id` varchar(128) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `request` text,
+  `response` text,
+  `createtime` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `modifytime` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`itemId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of postman_itemlist
 -- ----------------------------
 
 -- ----------------------------
@@ -100,28 +143,39 @@ CREATE TABLE `project` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `projectName` varchar(255) DEFAULT NULL,
   `projectDescribe` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+  `createtime` timestamp NULL DEFAULT NULL,
+  `modifytime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `project_id` varchar(64) NOT NULL,
+  PRIMARY KEY (`id`,`project_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of project
 -- ----------------------------
-INSERT INTO `project` VALUES ('1', '煤炭江湖', '煤炭江湖描述');
-INSERT INTO `project` VALUES ('2', '鳗鱼出行', '鳗鱼出行描述');
+INSERT INTO `project` VALUES ('19', '煤炭江湖', '', '2018-07-04 18:08:11', '2018-07-04 18:08:11', '93e221f8-100b-4cf6-a5d7-32cd9c0d3938');
 
 -- ----------------------------
--- Table structure for task_testcase
+-- Table structure for task_group
 -- ----------------------------
-DROP TABLE IF EXISTS `task_testcase`;
-CREATE TABLE `task_testcase` (
-  `taskId` varchar(64) NOT NULL,
-  `testcaseId` varchar(64) NOT NULL,
-  `cronExpresstion` varchar(255) NOT NULL
+DROP TABLE IF EXISTS `task_group`;
+CREATE TABLE `task_group` (
+  `cratetime` timestamp NULL DEFAULT NULL,
+  `modifytime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `group_id` varchar(64) NOT NULL,
+  `group_name` varchar(255) DEFAULT NULL,
+  `group_describe` varchar(255) DEFAULT NULL,
+  `isRun` tinyint(4) unsigned zerofill NOT NULL DEFAULT '0000',
+  `cron_expression` varchar(64) DEFAULT NULL,
+  `count` int(11) DEFAULT '0',
+  PRIMARY KEY (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of task_testcase
+-- Records of task_group
 -- ----------------------------
+INSERT INTO `task_group` VALUES ('2018-07-06 11:34:35', '2018-07-06 11:53:35', '1fc94696-c0aa-452b-9a43-f55e8501fc00', '运行中的定时任务', '', '0000', '0/5 * * * * ?', '3');
+INSERT INTO `task_group` VALUES ('2018-07-06 11:52:17', '2018-07-06 11:55:44', '4bfa71b9-8b6e-4c3a-96b1-a9711ac9ef8a', '定时任务测试', '', '0001', '0/5 * * * * ?', '2');
+INSERT INTO `task_group` VALUES ('2018-07-06 11:30:07', '2018-07-06 11:30:14', 'fd10ef9c-2f8c-452f-baf6-7765362c15b7', '测试', '测试', '0000', '0/5 * * * * ?', '2');
 
 -- ----------------------------
 -- Table structure for testcase
@@ -135,13 +189,17 @@ CREATE TABLE `testcase` (
   `url` varchar(255) NOT NULL,
   `requestType` int(10) NOT NULL,
   `verification` varchar(255) NOT NULL,
+  `projectId` varchar(64) NOT NULL,
   PRIMARY KEY (`testcaseId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of testcase
 -- ----------------------------
-INSERT INTO `testcase` VALUES ('11111', '测试用例', '', '', 'https://www.baidu.com/', '1', '111');
+INSERT INTO `testcase` VALUES ('04f1715b-932a-4c87-867b-283e0abc7270', '测试用例', '', null, 'https://www.easy-mock.com/mock/5afbfcbf5f03f365b8a8d79f/example/query', '1', '', '93e221f8-100b-4cf6-a5d7-32cd9c0d3938');
+INSERT INTO `testcase` VALUES ('75b5bc43-2eef-45e4-97aa-5e568bd68deb', '测试', '', null, 'https://www.easy-mock.com/mock/5afbfcbf5f03f365b8a8d79f/example/query', '1', '', 'other');
+INSERT INTO `testcase` VALUES ('c0134e20-cda0-44bf-ac2f-233258eca443', '测试', '', null, 'https://www.easy-mock.com/mock/5afbfcbf5f03f365b8a8d79f/example/query', '1', '', '93e221f8-100b-4cf6-a5d7-32cd9c0d3938');
+INSERT INTO `testcase` VALUES ('df27310f-d047-4892-8623-b05faba18a4e', '测试', '', null, 'https://www.easy-mock.com/mock/5afbfcbf5f03f365b8a8d79f/example/query', '1', '', 'other');
 
 -- ----------------------------
 -- Table structure for user

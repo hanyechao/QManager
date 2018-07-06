@@ -26,7 +26,6 @@ public class TestcaseJob implements Job {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.err.println(arg0.getJobDetail().getKey().getName());
 		for (Testcase testcase : testcases) {
 			System.err.println(testcase.getResponse());
 		}

@@ -1,6 +1,10 @@
 package com.company.project.model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Id;
+
+import lombok.Getter;
+import lombok.Setter;
 
 public class Testcase {
     @Id
@@ -21,6 +25,11 @@ public class Testcase {
     private Integer requesttype;
 
     private String verification;
+    
+    @Column(name = "projectId")
+    @Getter
+    @Setter
+    private String projectid;
 
     /**
      * @return testcaseId

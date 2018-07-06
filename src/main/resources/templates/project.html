@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- header content -->
+	<% include("/header.html"){}%>
+	<link rel="stylesheet" href="/static/bootstrap/css/jquery.jsonview.css">
+	<!-- header content -->
+	<!-- css属性 -->
+	<style type="text/css">
+		.fix_th {width:150px}
+	</style>
+	<!-- css属性 -->
+</head>
+
+<body>
+<div class="container">	
+	<!-- Nav Bar Content -->
+	<% include("/nav_bar.html",{project:"active",management:"active"}){}%>
+	<!-- Nav Bar Content -->
+
+	<table class="table">
+		<caption>项目信息<div align="right" style="float:right"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">添加项目</button></div></caption>
+	   <thead>
+		  <tr>
+			 <th>ID</th>
+		  	 <th>项目名称</th>
+			 <th>项目描述</th>
+			 <th>操作</th>
+		  </tr>
+	   </thead>
+	   <tbody>	  
+	   </tbody>
+	</table>
+	
+	
+		<!-- 模态框（Modal） -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							&times;
+						</button>
+						<h4 class="modal-title" id="myModalLabel">
+							添加项目
+						</h4>
+					</div>
+					<div class="modal-body">
+						<form class="form-horizontal" role="form">
+						  <div class="form-group">
+							<label for="input" class="col-sm-2 control-label">项目名称</label>
+							<div class="col-sm-10">
+							  <input type="text" class="form-control" id="projectname" placeholder="请输入项目名称">
+							</div>
+						  </div>
+						  <div class="form-group">
+							<label for="input" class="col-sm-2 control-label">项目描述</label>
+							<div class="col-sm-10">
+							  <input type="text" class="form-control" id="projectdescribe" placeholder="请输入项目描述">
+							</div>
+						  </div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+						</button>
+						<button type="button" class="btn btn-primary" id="submit">
+							提交
+						</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal -->
+		</div>	
+	
+</div>
+<script src="/static/bootstrap/js/jquery.jsonview.js"></script>
+<script>
+$(document).ready(function(){
+
+<!-- $.get("http://127.0.0.1:9999",function(data,status){ -->
+
+<!-- });	 -->
+
+$.post("/project/list",function(data,status){
+    if(data.code=="200"){
+		var renderContent;
+		if(data.data.list.length==0){
+			renderContent = "<span>暂无内容！</span>";
+		}
+		for(var i = 0;i < data.data.list.length; i++ ){
+			renderContent += "<tr id=\""+data.data.list[i].projectId+"\"><td>"+i+"</td><td>"+data.data.list[i].projectname+"</td><td>"+data.data.list[i].projectdescribe+"</td><td><a href=\"#\">编辑</a>|<a href='javascript:void(0);'>删除</a></td></tr>";
+		}
+		$("tbody").html(renderContent);
+		
+	}
+	
+	$("a").click(function(){
+		<!-- window.localStorage.setItem("id", $(this).parent().prev().prev().prev().text()); -->
+		window.localStorage.setItem("project_id", $(this).parent().parent().attr("id"));
+	});
+	
+	
+});
+
+$("#submit").click(function(){
+var projectname = $("#projectname").val();
+var projectdescribe = $("#projectdescribe").val();
+
+$(this).text("提交中");
+$(this).attr("disabled","true"); //设置变灰按钮   
+setTimeout("$('#submit').removeAttr('disabled')",1000); //设置三秒后提交按钮 显示 
+$.post("/project/add",{projectname:projectname,projectdescribe:projectdescribe},function(data,status){
+if(data.code=="200"){
+$('#myModal').modal('hide');
+window.location.reload();
+}
+if(data.code=="400"){
+alert(data.message);
+
+}
+});	
+});	
+
+$("tbody").on("click","a",function(){
+	var projectId = $(this).parent().parent().attr("id")
+	if($(this).text()== "删除" && confirm("是否要删除该条数据？")){
+	
+		$.post("/project/delete",{projectId:projectId},function(data,status){
+			if(data.code=="200"){
+			window.location.reload();
+			}
+			if(data.code=="400"){
+			alert(data.message);
+			}
+			});	
+	}
+
+});
+
+$("#wiremock_reset").click(function(){
+var operateCode="WIRE_MOCK_RESET";
+$(this).attr("disabled","true"); //设置变灰按钮   
+setTimeout("$('#wiremock_reset').removeAttr('disabled')",1000); //设置三秒后提交按钮 显示 
+$.post("/mockdata/mockservice/"+operateCode,function(data,status){
+if(data.code=="200"){
+alert(data.message);
+}
+if(data.code=="400"){
+alert(data.message);
+}
+});	
+});	
+
+$("#wiremock_stop").click(function(){
+var operateCode="WIRE_MOCK_STOP";
+$(this).attr("disabled","true"); //设置变灰按钮   
+setTimeout("$('#wiremock_reset').removeAttr('disabled')",1000); //设置三秒后提交按钮 显示 
+$.post("/mockdata/mockservice/"+operateCode,function(data,status){
+if(data.code=="200"){
+alert(data.message);
+}
+if(data.code=="400"){
+alert(data.message);
+}
+});	
+});	
+	
+});
+
+</script>
+
+</body>
+</html>

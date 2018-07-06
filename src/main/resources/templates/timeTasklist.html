@@ -15,7 +15,28 @@
 <!-- Nav Bar Content -->
 
 <div class="container">
+<div class="row">
+<table class="table">
+<caption>定时任务分组列表<div align="right" style="float:right"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">添加定时任务分组</button></div></caption>
 
+<thead>
+<tr>
+<th class="fix_th">ID</th>
+<th class="fix_th">任务名称</th>
+<th class="fix_th">任务描述</th>
+<th class="fix_th">cron表达式</th>
+<th class="fix_th">运行状态</th>
+<th class="fix_th">操作</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+
+</div>
+
+
+<!-- 列表 
 <div class="row">
 <div><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">添加定时任务分组</button></div>
 <hr>
@@ -23,7 +44,7 @@
 
 
 </div>
-
+-->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 			aria-labelledby="myModalLabel" aria-hidden="true">
 			<div class="modal-dialog">
@@ -35,13 +56,24 @@
 					</div>
 					<div class="modal-body">
 						<div>
-							<label class="col-sm-2 control-label">任务名称</label> <input
+							<label class="col-sm-3 control-label">任务名称</label> <input
 								type="text" class="form-control" id="taskName" placeholder="输入任务名称">
 						</div>
 						
 						<div>
-							<label class="col-sm-2 control-label">任务描述</label> <input
+							<label class="col-sm-3 control-label">任务描述</label> <input
 								type="text" class="form-control" id="taskdescribe" placeholder="输入任务描述">
+						</div>
+						<div>
+							<label class="col-sm-3 control-label">CRON表达式</label> <input
+								type="text" class="form-control" id="cronexpression" placeholder="输入CRON表达式,例如：* * * * * ？">
+						</div>
+						<div>
+							<label class="col-sm-2 control-label">是否运行</label>
+							<select class="form-control" id="isRun">
+								<option value="1">是</option>
+								<option value="0">否</option>
+							</select>
 						</div>
 
 					</div>
@@ -73,20 +105,36 @@ $(document).ready(function(){
 		renderContent="<span>暂无内容！</span>"
 		}
 		for(var i = 0;i < data.data.list.length; i++ ){
-		renderContent += '<a href="#"><div class="panel panel-default col-xs-12"><div class="panel-body">'+data.data.list[i].groupName+'</div></div></a>';
+//		renderContent += '<div class="panel panel-default col-xs-12"><div class="panel-body"><a href="/timetask/detail?groupId='+data.data.list[i].groupId+'">'+
+//		data.data.list[i].groupName+'</a><hr>'+'CRON表达式：'+data.data.list[i].cronExpression+'<div align="right" style="float:right"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal" name ="'+data.data.list[i].groupId+'">编辑</button></div><br>状态：'+getRunState(data.data.list[i].isrun)+'</div></div>';
+		
+		renderContent += "<tr id="+data.data.list[i].groupId+"><td>"+(i+1)+
+		"</td><td><a href=/timetask/detail?groupId="+data.data.list[i].groupId+">"+data.data.list[i].groupName+
+		"</a></td><td>"+data.data.list[i].groupDescribe+
+		"</td><td>"+data.data.list[i].cronExpression+
+		"</td><td>"+getRunState(data.data.list[i].isrun)+
+		"</td><td><a href=\"#\">编辑</a>|<a class='delete' href=\"#\">刪除</a></td></tr>";
+		
 		}
-		$("#tasklist").html(renderContent);
+		$("tbody").html(renderContent);
 
 		}
 
 		});
 	
-	
+	function getRunState(isRun){
+	if(isRun==0){
+		return "<span class='label label-default' value = '0'>停止</span>"
+	}else{
+		return "<span class='label label-info' value = '1'>运行中</span>"
+	}
+	}
 	
 	$("#ts_add").click(function(){
 		var taskName=$("#taskName").val();
 		var taskdescribe=$("#taskdescribe").val();
-
+		var cronexpression = $("#cronexpression").val();
+		var isRun = $("#isRun").val();
 		if(taskName==null||taskName==""){
 		alert("任务名称不能为空！");
 		return false;
@@ -96,7 +144,7 @@ $(document).ready(function(){
 		$(this).attr("disabled","true"); //设置变灰按钮   
 		setTimeout("$('#ts_add').removeAttr('disabled'),$('#ts_add').text('提交')",1000); //设置三秒后提交按钮 显示 
 		
-		$.post("/task/group/add",{groupName:taskName,groupDescribe:taskdescribe},function(data,status){
+		$.post("/task/group/add",{groupName:taskName,groupDescribe:taskdescribe,cronExpression:cronexpression,isrun:isRun},function(data,status){
 			if(data.code=="200"){
 				$("#myModal").modal("hide")
 				window.location.reload();
@@ -105,9 +153,25 @@ $(document).ready(function(){
 		
 
 		});	
+		
 
+		$("tbody").on("click",".delete",function(){
+			var groupId = $(this).parent().parent().attr("id")
+			if(groupId!=null||groupId!=""){
+				if(confirm("是否要删除该条数据！")){
+					$.post("/task/group/delete",{groupId:groupId},function(data,status){
+						if(data.code=="200"){	
+							window.location.reload();
+						}
+						if(data.code=="400"){
+						alert(data.message);
 
+						}
+						});	
+				}
+			}
 
+		});
 
 
 

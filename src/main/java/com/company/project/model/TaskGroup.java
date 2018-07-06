@@ -3,123 +3,130 @@ package com.company.project.model;
 import java.util.Date;
 import javax.persistence.*;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Table(name = "task_group")
 public class TaskGroup {
-    @Id
-    @Column(name = "group_id")
-    private String groupId;
+	@Id
+	@Column(name = "group_id")
+	private String groupId;
 
-    private Date cratetime;
+	private Date cratetime;
 
-    private Date modifytime;
+	private Date modifytime;
 
-    @Column(name = "group_name")
-    private String groupName;
+	@Column(name = "group_name")
+	private String groupName;
 
-    @Column(name = "group_describe")
-    private String groupDescribe;
+	@Column(name = "group_describe")
+	private String groupDescribe;
 
-    @Column(name = "isRun")
-    private Byte isrun;
+	@Column(name = "isRun")
+	private Byte isrun;
 
-    @Column(name = "cron_expression")
-    private String cronExpression;
+	@Column(name = "cron_expression")
+	private String cronExpression;
 
-    /**
-     * @return group_id
-     */
-    public String getGroupId() {
-        return groupId;
-    }
+	@Getter
+	@Setter
+	private int count;
 
-    /**
-     * @param groupId
-     */
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
+	/**
+	 * @return group_id
+	 */
+	public String getGroupId() {
+		return groupId;
+	}
 
-    /**
-     * @return cratetime
-     */
-    public Date getCratetime() {
-        return cratetime;
-    }
+	/**
+	 * @param groupId
+	 */
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
 
-    /**
-     * @param cratetime
-     */
-    public void setCratetime(Date cratetime) {
-        this.cratetime = cratetime;
-    }
+	/**
+	 * @return cratetime
+	 */
+	public Date getCratetime() {
+		return cratetime;
+	}
 
-    /**
-     * @return modifytime
-     */
-    public Date getModifytime() {
-        return modifytime;
-    }
+	/**
+	 * @param cratetime
+	 */
+	public void setCratetime(Date cratetime) {
+		this.cratetime = cratetime;
+	}
 
-    /**
-     * @param modifytime
-     */
-    public void setModifytime(Date modifytime) {
-        this.modifytime = modifytime;
-    }
+	/**
+	 * @return modifytime
+	 */
+	public Date getModifytime() {
+		return modifytime;
+	}
 
-    /**
-     * @return group_name
-     */
-    public String getGroupName() {
-        return groupName;
-    }
+	/**
+	 * @param modifytime
+	 */
+	public void setModifytime(Date modifytime) {
+		this.modifytime = modifytime;
+	}
 
-    /**
-     * @param groupName
-     */
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
+	/**
+	 * @return group_name
+	 */
+	public String getGroupName() {
+		return groupName;
+	}
 
-    /**
-     * @return group_describe
-     */
-    public String getGroupDescribe() {
-        return groupDescribe;
-    }
+	/**
+	 * @param groupName
+	 */
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
 
-    /**
-     * @param groupDescribe
-     */
-    public void setGroupDescribe(String groupDescribe) {
-        this.groupDescribe = groupDescribe;
-    }
+	/**
+	 * @return group_describe
+	 */
+	public String getGroupDescribe() {
+		return groupDescribe;
+	}
 
-    /**
-     * @return isRun
-     */
-    public Byte getIsrun() {
-        return isrun;
-    }
+	/**
+	 * @param groupDescribe
+	 */
+	public void setGroupDescribe(String groupDescribe) {
+		this.groupDescribe = groupDescribe;
+	}
 
-    /**
-     * @param isrun
-     */
-    public void setIsrun(Byte isrun) {
-        this.isrun = isrun;
-    }
+	/**
+	 * @return isRun
+	 */
+	public Byte getIsrun() {
+		return isrun;
+	}
 
-    /**
-     * @return cron_expression
-     */
-    public String getCronExpression() {
-        return cronExpression;
-    }
+	/**
+	 * @param isrun
+	 */
+	public void setIsrun(Byte isrun) {
+		this.isrun = isrun;
+	}
 
-    /**
-     * @param cronExpression
-     */
-    public void setCronExpression(String cronExpression) {
-        this.cronExpression = cronExpression;
-    }
+	/**
+	 * @return cron_expression
+	 */
+	public String getCronExpression() {
+		return cronExpression;
+	}
+
+	/**
+	 * @param cronExpression
+	 */
+	public void setCronExpression(String cronExpression) {
+		this.cronExpression = cronExpression;
+	}
 }

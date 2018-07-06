@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- header content -->
+<% include("/header.html"){}%>
+<link rel="stylesheet" href="/static/bootstrap/css/jquery.jsonview.css">
+
+<!-- header content -->
+</head>
+
+<body>
+<div class="container">
+<!-- Nav Bar Content -->
+<% include("/nav_bar.html",{timeTasklist:"active",CItest:"active"}){}%>
+<!-- Nav Bar Content -->
+
+<div class="container">
+
+<div class="row">
+
+<table class="table">
+<caption>已添加测试用例列表<div align="right" style="float:right"><button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">关联用例</button></div></caption>
+
+<thead>
+<tr>
+<th class="fix_th">ID</th>
+<th class="fix_th">测试用例</th>
+<th class="fix_th">操作</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+
+		<!-- 模态框（Modal） -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+							&times;
+						</button>
+						<h4 class="modal-title" id="myModalLabel">
+							关联用例
+						</h4>
+					</div>
+					<div class="modal-body">
+						<div class="panel-group" id="accordion">
+
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭
+						</button>
+						<button type="button" class="btn btn-primary" id="submit">
+							提交
+						</button>
+					</div>
+				</div><!-- /.modal-content -->
+			</div><!-- /.modal -->
+		</div>
+
+</div>
+
+</div>
+
+
+
+
+</div>
+<script src="/static/bootstrap/js/jquery.jsonview.js"></script>
+<script>
+$(document).ready(function(){
+	
+
+
+	$.post("/task/group/detail",{groupId:GetQueryString("groupId")},function(data){	
+		if(data.code=="200"){
+		var renderContent="";
+		if(data.data==null||data.data.testcases==null){
+		renderContent="<span>暂无内容！</span>"
+		$("tbody").html(renderContent);
+		return;
+		return;
+		}
+		if(data.data.isRun == 0){
+			isRunLable = "<span class='label label-default'>停止</span>";
+		}else{
+			isRunLable = "<span class='label label-info'>运行</span>";
+		}
+		
+		if(data.data.testcases.length == 0){
+			renderContent = "<span>暂无内容！</span>";
+		}
+		for(var i = 0;i < data.data.testcases.length; i++ ){		
+		renderContent += "<tr><td>"+(i+1)+
+		"</td><td>"+
+		"testcaseid："+data.data.testcases[i].testcaseid+
+		"\n</br>url："+data.data.testcases[i].url+
+		"\n</br>requesttype："+data.data.testcases[i].requesttype+
+		"\n</br>requestcontent："+data.data.testcases[i].requestcontent+
+		"</td><td><a href=\"#\">编辑</a>|<a class='delete' href=\"#\">刪除</a></br></br>"+isRunLable+"</td></tr>";
+		}
+		$("tbody").html(renderContent);
+		}
+
+		});
+	
+	
+	
+	$("#ts_add").click(function(){
+		var taskName=$("#taskName").val();
+		var taskdescribe=$("#taskdescribe").val();
+
+		if(taskName==null||taskName==""){
+		alert("任务名称不能为空！");
+		return false;
+		}
+
+		$(this).text("提交中");
+		$(this).attr("disabled","true"); //设置变灰按钮   
+		setTimeout("$('#ts_add').removeAttr('disabled'),$('#ts_add').text('提交')",1000); //设置三秒后提交按钮 显示 
+		
+		$.post("/task/group/add",{groupName:taskName,groupDescribe:taskdescribe},function(data,status){
+			if(data.code=="200"){
+				$("#myModal").modal("hide")
+				window.location.reload();
+			}
+			});	
+		
+
+		});	
+
+
+		function GetQueryString(name)
+		{
+		     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+		     var r = window.location.search.substr(1).match(reg);
+		     if(r!=null)return  unescape(r[2]); return null;
+		}
+
+		
+		$('#myModal').on('show.bs.modal', function () {
+		  	$.post("/task/group/testcaseJoinGroup",{groupId:GetQueryString("groupId")},function(data,status){
+			
+			if(data.code=="200"){
+					var renderContent="";
+					if(data.data.length==0){
+						renderContent = "<span>暂无可用测试用例关联，请速速添加测试用例吧！~。~</span>";					
+					}
+					for(var i = 0;i < data.data.length; i++ ){		
+					renderContent +=  '<div class="panel panel-info"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse"data-parent="#accordion"href="#'+data.data[i].projectId+'">项目名称：'+data.data[i].projectname+'</a></h4></div><div id="'+data.data[i].projectId+'"class="panel-collapse collapse"><div class="panel-body">'+getParam(data.data[i].params)+'</div></div></div>';
+					}
+					$("#accordion").html(renderContent);			
+			}
+			});	
+		});
+		
+		function getParam(param){
+			var content="";
+			for(var i = 0;i < param.length;i++){
+				content += '<div class="checkbox"><label><input type="checkbox"value="'+param[i].testcaseid+'"><div>用例名称：'+param[i].testcasename+'</div></label></div>';
+			}
+			return content;
+		
+		}
+		
+
+
+		$("#accordion").on("click",function(){
+			
+			$(function () { $('.collapse').collapse({
+			toggle: false
+			})});			
+		});
+		
+        <!--获取选中复选框的值-->
+        $("#submit").click(function(){
+        	var array = "";
+        	
+			$.each($('input:checkbox'),function(){
+                if(this.checked){
+					array +=$(this).val()+"|"
+                }
+            });
+		  	$.post("/group/testcase/add",{groupId:GetQueryString("groupId"),testcaseIds:array},function(data,status){				
+		  		if(data.code=="200"){
+		  			$('#myModal').modal('hide');
+		  			window.location.reload();
+		  			}
+		  			if(data.code=="400"){
+		  			alert(data.message);
+		  			}
+				});
+        });
+		
+
+	
+
+
+
+
+
+
+
+
+
+});
+</script>
+
+</body>
+</html>

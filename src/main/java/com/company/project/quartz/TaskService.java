@@ -31,12 +31,17 @@ public class TaskService {
 	@Autowired
 	TestcaseService testcaseService;
 
-	protected List<GroupToTask> getGroupTestcase() {
+	public List<GroupToTask> getGroupTestcase(int isRun) {
 		// HashMap<String, List<Testcase>> gtHashMap = new HashMap<>();
 		List<GroupToTask> groupToTasks = new ArrayList<>();
+
 		Condition condition = new Condition(TaskGroup.class);
-		int isRun = 1;
-		condition.and().andEqualTo("isrun", isRun);
+		//isRun==2查询所有
+		if (isRun==2) {	
+		}else {
+//			int isRun = 1;
+			condition.and().andEqualTo("isrun", isRun);
+		}
 		List<TaskGroup> taskGroups = taskGroupService.findByCondition(condition);
 		Condition condition1 = new Condition(GroupTestcase.class);
 		for (TaskGroup taskGroup : taskGroups) {
@@ -45,6 +50,7 @@ public class TaskService {
 			groupToTask.setGroupName(taskGroup.getGroupName());
 			groupToTask.setGroupDescribe(taskGroup.getGroupDescribe());
 			groupToTask.setCronExpression(taskGroup.getCronExpression());
+			groupToTask.setIsRun(taskGroup.getIsrun());
 			groupToTasks.add(groupToTask);
 			condition1.or().orEqualTo("groupId", taskGroup.getGroupId());
 		}

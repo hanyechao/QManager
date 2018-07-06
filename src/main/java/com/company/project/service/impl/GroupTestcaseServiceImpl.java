@@ -21,5 +21,14 @@ public class GroupTestcaseServiceImpl extends AbstractService<GroupTestcase> imp
     @Resource
     private GroupTestcaseMapper groupTestcaseMapper;
 
+	@Override
+	public int findByGroupId(String groupId) {
+		GroupTestcase groupTestcase = new GroupTestcase();
+		groupTestcase.setGroupId(groupId);
+		return groupTestcaseMapper.selectCount(groupTestcase);
+	}
+
+
+
 
 }

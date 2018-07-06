@@ -44,4 +44,18 @@ public class MainController {
 	public String timeTasklist() {
 		return "timeTasklist";
 	}
+	
+	@RequestMapping("/timetask/detail")
+	public String timetaskdetail() {
+		return "timeTaskDetail";
+	}
+	
+	@RequestMapping("/other/project")
+	public String project() {
+		return "project";
+	}
+	@RequestMapping("/other/timertask/setting")
+	public String timertaskSetting() {
+		return "timerTaskSetting";
+	}
 }

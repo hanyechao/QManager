@@ -6,7 +6,10 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="group_id" jdbcType="VARCHAR" property="groupId" />
     <result column="projectName" jdbcType="VARCHAR" property="projectname" />
     <result column="projectDescribe" jdbcType="VARCHAR" property="projectdescribe" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="modifytime" jdbcType="TIMESTAMP" property="modifytime" />
   </resultMap>
 </mapper>

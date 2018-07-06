@@ -6,6 +6,7 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import javax.swing.Spring;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import com.company.project.testcaseQM.SendRequestQM;
 import com.company.project.testcaseQM.model.TestcaseQM;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.util.StringUtil;
 
 /**
  * Created by CodeGenerator on 2018/06/12.
@@ -61,6 +63,9 @@ public class TestcaseController {
 		}
 		String uuid = UUID.randomUUID().toString();
 		testcase.setTestcaseid(uuid);
+		if (StringUtils.isBlank(testcase.getProjectid())) {
+			testcase.setProjectid("other");
+		}
 		testcaseService.save(testcase);
 		return ResultGenerator.genSuccessResult();
 	}

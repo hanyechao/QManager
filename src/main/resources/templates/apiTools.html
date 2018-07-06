@@ -69,6 +69,12 @@
 								type="text" class="form-control" id="ts_param"
 								placeholder="输入请求参数，例如：map形式xxx=xxx&xxx=xxx，或者json形式">
 						</div>
+						<div>
+							<label class="col-sm-2 control-label">关联项目</label>(可到项目配置管理添加项目)
+							<select class="form-control" id="projectSelect">
+								<option>其他</option>
+							</select>
+						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-default" data-dismiss="modal">关闭
@@ -132,18 +138,11 @@ $(document).ready(function(){
 
 	});	
 	
-	$("#add").click(function(){
-		var url=$("#url").val();
-		var options=$("#select option:selected").text();
-		var param=$("#param").val();
-		$("#ts_url").val(url);
-		$("#ts_select").val(options);
-		$("#ts_param").val(param);		
-	});
 	
 	$("#ts_add").click(function(){
 			var ts_url=$("#ts_url").val();
 			var ts_select=$("#ts_select option:selected").text();
+			var projectId=$("#projectSelect option:selected").attr("id");
 			var ts_param=$("#ts_param").val();
 			var ts_name=$("#ts_name").val();
 			if(ts_url==null||ts_url==""){
@@ -167,7 +166,7 @@ $(document).ready(function(){
 			$(this).attr("disabled","true"); //设置变灰按钮   
 			setTimeout("$('#ts_add').removeAttr('disabled'),$('#ts_add').text('提交')",1000); //设置三秒后提交按钮 显示 
 			
-			$.post("/testcase/add",{url:ts_url,requesttype:ts_select,requestcontent:ts_param,testcasename:ts_name,verification:""},function(data,status){
+			$.post("/testcase/add",{url:ts_url,requesttype:ts_select,requestcontent:ts_param,testcasename:ts_name,verification:"",projectid:projectId},function(data,status){
 				if(data.code=="200"){
 					$("#myModal").modal("hide")
 				}
@@ -175,6 +174,25 @@ $(document).ready(function(){
 			
 
 	});	
+		
+		
+		$('#myModal').on('show.bs.modal', function () {
+				var url=$("#url").val();
+				var options=$("#select option:selected").text();
+				var param=$("#param").val();
+				$("#ts_url").val(url);
+				$("#ts_select").val(options);
+				$("#ts_param").val(param);	
+			renderContent = "<option>其他</option>";
+			$.post("/project/all",function(data,status){
+				if(data.data.length >0){
+					for(var i = 0;i < data.data.length;i++){
+					renderContent += "<option id="+data.data[i].projectId+">"+data.data[i].projectname+"</option>"
+					}
+					$("#projectSelect").html(renderContent);
+				}
+		});	
+		})
 	
 
 });
