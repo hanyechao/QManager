@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.quartz.CronScheduleBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,6 +57,14 @@ public class TaskGroupController {
 
 	@PostMapping("/add")
 	public Result add(TaskGroup taskGroup) {
+
+		try {
+			CronScheduleBuilder.cronSchedule(taskGroup.getCronExpression());
+		} catch (RuntimeException e) {
+			String string = "输入的cron表达式不能为空或者不合法！";
+			return ResultGenerator.genFailResult(string);
+		}
+
 		taskGroup.setGroupId(UUID.randomUUID().toString());
 		taskGroup.setCratetime(new Date());
 		taskGroup.setModifytime(new Date());

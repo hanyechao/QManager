@@ -149,6 +149,10 @@ $(document).ready(function(){
 				$("#myModal").modal("hide")
 				window.location.reload();
 			}
+			if(data.code=="400"){
+				alert(data.message);
+				}
+			
 			});	
 		
 

@@ -1,9 +1,5 @@
 package com.conpany.project;
 
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
-import static org.quartz.TriggerBuilder.newTrigger;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,16 +7,11 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import org.junit.Test;
-import org.quartz.JobDetail;
-import org.quartz.SchedulerException;
-import org.quartz.Trigger;
-import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.company.project.model.GroupTestcase;
 import com.company.project.model.TaskGroup;
 import com.company.project.model.Testcase;
-import com.company.project.quartz.TestcaseJob;
 import com.company.project.quartz.model.GroupToTask;
 import com.company.project.service.GroupTestcaseService;
 import com.company.project.service.TaskGroupService;
@@ -83,12 +74,33 @@ public class GroupTestcaseServiceImplTest extends Tester {
 	}
 
 	@Test
-	public void findByGroupIdTest(){
-		int findByGroupId = groupTestcaseService.findByGroupId("75946ca2-ad7d-405b-a6d3-ecf440901ccb");
-		System.err.println(findByGroupId);
+	public void findByGroupIdTest() {
+		GroupTestcase groupTestcase = new GroupTestcase();
+		groupTestcase.setGroupId("fc9a1bdf-2c08-43c1-908d-9a28bca2c4da");
+		groupTestcase.setTestcaseid("179b8ffe-924c-45c0-a226-28f7f81ac820");
+		int delete = groupTestcaseService.delete(groupTestcase);
+		System.err.println(delete);
+
 	}
+	
+	@Test
+	public void testcaseTest(){
+		Testcase findBy = testcaseService.findBy("testcaseid", "on");
+		System.err.println(findBy);
+	}
+	
+	
 	public static void main(String[] args) {
-		
-		
+
+		List<String> asList = new ArrayList<>();
+		asList.add("a");
+		asList.add("ab");
+		asList.add("ac");
+		asList.add("ac");
+		asList.add(null);
+		StringBuffer b = new StringBuffer();
+		asList.stream().filter(a -> a != "ac" && a != null).forEach(a -> b.append(a + "|"));
+		System.err.println(b);
+
 	}
 }

@@ -5,6 +5,7 @@
 
 	<version>1.0</version>
 	<packaging>jar</packaging>
+	<!--<packaging>war</packaging> -->
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -18,6 +19,15 @@
 	</parent>
 
 	<dependencies>
+		<!-- 配置集成war包需要的依赖 -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- 热部署模块 <dependency> <groupId>org.springframework.boot</groupId> <artifactId>spring-boot-devtools</artifactId> 
+			<optional>true</optional> </dependency> -->
 		<dependency><!-- 该依赖必加，里面有sping对schedule的支持 -->
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context-support</artifactId>
@@ -73,6 +83,13 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<!-- 移除嵌入式tomcat插件 
+			<exclusions >
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>-->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -107,7 +124,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<scope>runtime</scope>
+			<version>5.1.32</version>
 		</dependency>
 		<!--MyBatis 及 插件依赖 -->
 		<dependency>
@@ -158,10 +175,18 @@
 	</dependencies>
 
 	<build>
+		<defaultGoal>compile</defaultGoal>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<dependencies>
+					<dependency>
+						<groupId>org.springframework</groupId>
+						<artifactId>springloaded</artifactId>
+						<version>1.2.5.RELEASE</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -173,6 +198,7 @@
 			</plugin>
 		</plugins>
 	</build>
+
 
 	<repositories>
 		<repository>
