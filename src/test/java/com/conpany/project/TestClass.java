@@ -1,12 +1,21 @@
 package com.conpany.project;
 
-import com.company.project.common.HttpUtil;
+import org.junit.Test;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 public class TestClass {
 
-	public static void main(String[] args) throws Exception {
-		System.err.println(16 & (6 - 1));
-		System.err.println(16 % (5));
+
+	
+	@Test
+	public void test(){
+		
+		 String chromedriver = "E:\\hanyechao\\chromedriver.exe";
+
+//		 System.setProperty("webdriver.chrome.driver", chromedriver);
+
+		 WebDriver driver = new ChromeDriver(); 
 
 	}
 }

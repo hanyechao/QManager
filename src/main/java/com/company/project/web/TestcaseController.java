@@ -15,13 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.company.project.core.Result;
 import com.company.project.core.ResultGenerator;
+import com.company.project.model.GroupTestcase;
 import com.company.project.model.Testcase;
+import com.company.project.service.GroupTestcaseService;
 import com.company.project.service.TestcaseService;
 import com.company.project.testcaseQM.SendRequestQM;
 import com.company.project.testcaseQM.model.TestcaseQM;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.util.StringUtil;
+
+import tk.mybatis.mapper.entity.Condition;
 
 /**
  * Created by CodeGenerator on 2018/06/12.
@@ -34,6 +38,9 @@ public class TestcaseController {
 
 	@Autowired
 	SendRequestQM sendRequestQM;
+
+	@Autowired
+	GroupTestcaseService groupTestcaseService;
 
 	@PostMapping("/post")
 	public Result post(TestcaseQM testcaseQM) {
@@ -72,6 +79,12 @@ public class TestcaseController {
 
 	@PostMapping("/delete")
 	public Result delete(@RequestParam String testcaseid) {
+		Condition condition = new Condition(GroupTestcase.class);
+		condition.createCriteria().andEqualTo("testcaseid", testcaseid);
+		List<GroupTestcase> findByCondition = groupTestcaseService.findByCondition(condition);
+		if (findByCondition.size() > 0) {
+			return ResultGenerator.genFailResult("定时任务分组内已关联相关用例，请取消关联后再删除！");
+		}
 		testcaseService.deleteTestcaseid(testcaseid);
 		return ResultGenerator.genSuccessResult();
 	}

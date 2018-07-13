@@ -4,6 +4,7 @@
 <!-- header content -->
 <% include("/header.html"){}%>
 <link rel="stylesheet" href="/static/bootstrap/css/jquery.jsonview.css">
+<link rel="stylesheet" href="/static/layui/css/layui.css"  media="all">
 
 <!-- header content -->
 </head>
@@ -37,8 +38,9 @@
 					</thead>
 					<tbody>
 					</tbody>
+					
 				</table>
-
+				<div id="demo7"></div>
 				<!-- 模态框（Modal） -->
 				<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 					aria-labelledby="myModalLabel" aria-hidden="true">
@@ -73,11 +75,12 @@
 
 	</div>
 	<script src="/static/bootstrap/js/jquery.jsonview.js"></script>
+	<script src="/static/layui/layui.js" charset="utf-8"></script>
 	<script>
 $(document).ready(function(){
+
+	var totalCount;
 	
-
-
 	$.post("/task/group/detail",{groupId:GetQueryString("groupId")},function(data){	
 		if(data.code=="200"){
 		var renderContent="";
@@ -96,16 +99,65 @@ $(document).ready(function(){
 		if(data.data.testcases.length == 0){
 			renderContent = "<span>暂无内容！</span>";
 		}
-		for(var i = 0;i < data.data.testcases.length; i++ ){		
-		renderContent += "<tr id="+data.data.testcases[i].testcaseid+"><td>"+(i+1)+
-		"</td><td>"+
-		"testcaseid："+data.data.testcases[i].testcaseid+
-		"\n</br>url："+data.data.testcases[i].url+
-		"\n</br>requesttype："+data.data.testcases[i].requesttype+
-		"\n</br>requestcontent："+data.data.testcases[i].requestcontent+
-		"</td><td><a href=\"#\">编辑</a>|<a class='delete' href=\"#\">刪除</a></br></br>"+isRunLable+"</td></tr>";
-		}
-		$("tbody").html(renderContent);
+
+		totalCount = data.data.testcases.length;
+		layui.use(['laypage', 'layer'], function(){
+			  var laypage = layui.laypage
+			  ,layer = layui.layer;
+			    //完整功能
+			  laypage.render({
+			    elem: 'demo7'
+			    ,count: totalCount
+			    ,limit:5
+			    ,curr: location.hash.replace('#!fenye=', '') 
+			    ,layout: ['count', 'prev', 'page', 'next', 'skip']
+			    ,jump: function(obj,first){
+			    	if(first){
+			    		if(totalCount<obj.limit){
+			    			limit = totalCount;
+			    		}else{
+			    			limit = obj.limit;
+			    		}
+			    		for(var i = 0;i < limit; i++ ){		
+			    			renderContent += "<tr id="+data.data.testcases[i].testcaseid+"><td>"+(i+1)+
+			    			"</td><td>"+
+			    			"testcaseid："+data.data.testcases[i].testcaseid+
+			    			"\n</br>url："+data.data.testcases[i].url+
+			    			"\n</br>requesttype："+data.data.testcases[i].requesttype+
+			    			"\n</br>requestcontent："+data.data.testcases[i].requestcontent+
+			    			"</td><td><a class='delete' href=\"#\">取消关联</a></br></br>"+isRunLable+"</td></tr>";
+			    			}
+			    		$("tbody").html(renderContent);
+			    		
+			    		
+			    	}else{
+			    		
+			    		testcases = data.data.testcases.slice((obj.curr-1)*obj.limit,data.data.testcases.length);
+			    		renderContent="";
+			    		if(testcases.length<obj.limit){
+			    			limit = testcases.length;
+			    		}else{
+			    			limit = obj.limit;
+			    		}
+			    		for(var i = 0;i < limit; i++ ){		
+			    			renderContent += "<tr id="+testcases[i].testcaseid+"><td>"+(i+1)+
+			    			"</td><td>"+
+			    			"testcaseid："+testcases[i].testcaseid+
+			    			"\n</br>url："+testcases[i].url+
+			    			"\n</br>requesttype："+testcases[i].requesttype+
+			    			"\n</br>requestcontent："+testcases[i].requestcontent+
+			    			"</td><td><a class='delete' href=\"#\">取消关联</a></br></br>"+isRunLable+"</td></tr>";
+			    			}
+			    		$("tbody").html(renderContent);
+			    		
+			    	}
+			    	
+			    	
+					
+			    }
+			  });
+			  });
+		
 		}
 
 		});
@@ -125,7 +177,9 @@ $(document).ready(function(){
 			if(data.code=="200"){
 					var renderContent="";
 					if(data.data.length==0){
-						renderContent = "<span>暂无可用测试用例关联，请速速添加测试用例吧！~。~</span>";					
+						renderContent = "<span>暂无可用测试用例关联，请速速添加测试用例吧！~。~</span>";
+						$("#submit").addClass("hide")
+						
 					}
 					for(var i = 0;i < data.data.length; i++ ){		
 					renderContent +=  '<div class="panel panel-info"><div class="panel-heading"><h4 class="panel-title"><a data-toggle="collapse"data-parent="#accordion"href="#'+data.data[i].projectId+'">项目名称:  <small>'+data.data[i].projectname+'</a></small></h4></div><div id="'+data.data[i].projectId+'"class="panel-collapse collapse"><div class="panel-body">'+getParam(data.data[i].params)+'</div></div></div>';
@@ -209,13 +263,10 @@ $(document).ready(function(){
 		});
 
 
-
-
-
-
-
 });
 </script>
+<script>
 
+</script>
 </body>
 </html>
