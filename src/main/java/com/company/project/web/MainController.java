@@ -9,6 +9,11 @@ public class MainController {
 	public String home() {
 		return "home";
 	}
+	
+	@RequestMapping("/login")
+	public String login() {
+		return "login";
+	}
 
 	@RequestMapping("/jenkins")
 	public String jenkins() {

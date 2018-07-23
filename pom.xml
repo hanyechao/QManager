@@ -19,6 +19,11 @@
 	</parent>
 
 	<dependencies>
+		<!-- springboot 权限配置 -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 		<!-- 配置集成war包需要的依赖 -->
 		<dependency>
 			<groupId>javax.servlet</groupId>

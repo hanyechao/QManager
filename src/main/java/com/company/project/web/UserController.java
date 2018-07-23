@@ -7,6 +7,7 @@ import com.company.project.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,9 +44,10 @@ public class UserController {
 		return ResultGenerator.genSuccessResult();
 	}
 
-	@GetMapping("/detail")
-	public Result detail(@RequestParam Integer id) {
-		User user = userService.findById(id);
+	@PostMapping("/detail")
+	public Result detail(Model model, User user) {
+		System.err.println(user.getUsername()+":"+user.getPassword());
+		model.addAttribute("user", user);
 		return ResultGenerator.genSuccessResult(user);
 	}
 
